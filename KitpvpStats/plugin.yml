@@ -1,0 +1,10 @@
+main: com.Sagacious_.KitpvpStats.Core
+name: PVPStats
+version: 1.0
+author: Sagacious_
+softdepend: [PlaceholderAPI, MVdWPlaceholderAPI]
+commands: 
+  stats:
+   aliases: [statistics]
+  leaderboardrefresh:
+   usage: /<command>

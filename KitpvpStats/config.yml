@@ -1,0 +1,34 @@
+leaderboard-format: '&6%number%. &e%name% &8| &r%integer%'
+leaderboard-update-time: 120
+
+leaderboard-kills-enabled: false
+leaderboard-kills-header: '&7Top 10 kills'
+leaderboard-kills-location: 'world, 0.0, 0.0, 0.0'
+
+leaderboard-deaths-enabled: false
+leaderboard-deaths-header: '&7Top 10 Deaths'
+leaderboard-deaths-location: 'world, 0.0, 0.0, 0.0'
+
+leaderboard-killstreak-enabled: false
+leaderboard-killstreak-header: '&7Top 10 Killstreaks'
+leaderboard-killstreak-location: 'world, 0.0, 0.0, 0.0'
+
+
+stats-command: 
+  - '&8-=-=-[ &aMy Statistics &8]-=-=-'
+  - '&7'
+  - '&aKills &8> &r%kills%'
+  - '&aDeaths &8> &r%deaths%'
+  - '&aKillstreak &8> &r%killstreak%'
+  - '&aTop Killstreak &8> &r%top_killstreak%'
+  - '&aLevel &8> &r%level%'
+  
+  
+  
+level-kills-interval: 25
+
+#Each string represents a higher level
+levels:
+  - '&6Rookie' #Lvl 1.
+  - '&aKiller' #Lvl 2.
+  - '&cMurderer' #Lvl 3.
