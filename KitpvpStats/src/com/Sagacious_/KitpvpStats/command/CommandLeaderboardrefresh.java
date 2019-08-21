@@ -10,7 +10,7 @@ public class CommandLeaderboardrefresh implements CommandExecutor{
 	
 	@Override
 	public boolean onCommand(CommandSender arg0, Command arg1, String arg2, String[] arg3) {
-		if(!arg0.hasPermission("kitstats.leaderboardrefresh")) {
+		if(!arg0.hasPermission("pvpstats.leaderboardrefresh")) {
 			return false;
 		}
 		Core.getInstance().lh.refreshDeaths();

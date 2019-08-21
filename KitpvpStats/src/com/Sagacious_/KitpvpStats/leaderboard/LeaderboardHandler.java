@@ -1,5 +1,7 @@
 package com.Sagacious_.KitpvpStats.leaderboard;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -8,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.Listener;
@@ -16,9 +19,11 @@ import com.Sagacious_.KitpvpStats.Core;
 import com.Sagacious_.KitpvpStats.data.UserData;
 
 public class LeaderboardHandler implements Listener{
-	private class Hologram {
+	public class Hologram {
 		private ArmorStand as;
+		private Location loc;
 		public Hologram(Location loc, String text) {
+			this.loc = loc;
 			as = (ArmorStand)loc.getWorld().spawnEntity(loc, EntityType.ARMOR_STAND);
 			as.setGravity(false);
 			as.setVisible(false);
@@ -26,6 +31,19 @@ public class LeaderboardHandler implements Listener{
 			as.setCustomName(text);
 			as.setCustomNameVisible(true);
 			as.setRemoveWhenFarAway(false);
+		}
+		
+		public Location getLocation() {
+			return loc;
+		}
+		
+		public void teleport(Location loc) {
+			this.loc = loc;
+			as.teleport(loc);
+		}
+		
+		public ArmorStand getStand() {
+			return as;
 		}
 		
 		public void kill() {
@@ -37,6 +55,25 @@ public class LeaderboardHandler implements Listener{
 		}
 	}
 	
+	public boolean isLeaderboard(ArmorStand as) {
+		for(Hologram k : kill_hologram) {
+			if(k.getStand().equals(as)) {
+				return true;
+			}
+		}
+		for(Hologram k : deaths_hologram) {
+			if(k.getStand().equals(as)) {
+				return true;
+			}
+		}
+		for(Hologram k : killstreak_hologram) {
+			if(k.getStand().equals(as)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 
 	private boolean lke = false;
 	private boolean lde = false;
@@ -46,9 +83,9 @@ public class LeaderboardHandler implements Listener{
 	private Location lde_l;
 	private Location lkie_l;
 	
-	private List<Hologram> kill_hologram = new ArrayList<Hologram>();
-	private List<Hologram> deaths_hologram = new ArrayList<Hologram>();
-	private List<Hologram> killstreak_hologram = new ArrayList<Hologram>();
+	public List<Hologram> kill_hologram = new ArrayList<Hologram>();
+	public List<Hologram> deaths_hologram = new ArrayList<Hologram>();
+	public List<Hologram> killstreak_hologram = new ArrayList<Hologram>();
 	private String format;
 	
 	private List<Integer> sortKills(){
@@ -127,6 +164,28 @@ public class LeaderboardHandler implements Listener{
 					refreshKillstreak();
 				}
 			}, 80L, 20L*conf.getInt("leaderboard-update-time"));
+		}
+	}
+	
+	public void save() {
+		File f = new File(Core.getInstance().getDataFolder(), "config.yml");
+		FileConfiguration conf = YamlConfiguration.loadConfiguration(f);
+		if(!kill_hologram.isEmpty()) {
+			Location l = kill_hologram.get(0).getLocation();
+			conf.set("leaderboard-kills-location", l.getWorld().getName() + "," + l.getX() + "," + (l.getY()+2) + "," + l.getZ());
+		}
+        if(!deaths_hologram.isEmpty()) {
+        	Location l = deaths_hologram.get(0).getLocation();
+			conf.set("leaderboard-deaths-location", l.getWorld().getName() + "," + l.getX() + "," + (l.getY()+2) + "," + l.getZ());
+		}
+        if(!killstreak_hologram.isEmpty()) {
+        	Location l = killstreak_hologram.get(0).getLocation();
+			conf.set("leaderboard-killstreak-location", l.getWorld().getName() + "," + l.getX() + "," + (l.getY()+2) + "," + l.getZ());
+        }
+        try {
+			conf.save(f);
+		} catch (IOException e) {
+			e.printStackTrace();
 		}
 	}
 	

@@ -20,14 +20,16 @@ public class UserData {
 	private int deaths;
 	private int killstreak;
 	private int top_killstreak;
+	private int resets;
 	
-	public UserData(UUID uuid, String name, int kills, int deaths, int killstreak, int top_killstreak) {
+	public UserData(UUID uuid, String name, int kills, int deaths, int killstreak, int top_killstreak, int resets) {
 		this.uuid = uuid;
 		this.name = name;
 		this.kills = kills;
 		this.deaths = deaths;
 		this.killstreak = killstreak;
 		this.top_killstreak = top_killstreak;
+		this.resets = resets;
 	}
 	
 	public void save() {
@@ -37,7 +39,7 @@ public class UserData {
 				PrintWriter pw = new PrintWriter(new FileWriter(f));
 				pw.println("name: '" + name + "'");pw.println("kills: " + kills);
 				pw.println("deaths: " + deaths);pw.println("killstreak: " + killstreak);
-				pw.println("top_killstreak: " + top_killstreak);
+				pw.println("top_killstreak: " + top_killstreak);pw.println("resets: " + resets);
 				pw.close();
 			} catch (IOException e) {
 				e.printStackTrace();
@@ -46,7 +48,7 @@ public class UserData {
 			FileConfiguration conf = YamlConfiguration.loadConfiguration(f);
 			conf.set("name", name);conf.set("kills", kills);
 			conf.set("deaths", deaths);conf.set("killstreak", killstreak);
-			conf.set("top_killstreak", top_killstreak);
+			conf.set("top_killstreak", top_killstreak);conf.set("resets", resets);
 			try {
 				conf.save(f);
 			} catch (IOException e) {
@@ -84,6 +86,10 @@ public class UserData {
 		return top_killstreak;
 	}
 	
+	public int getResets() {
+		return resets;
+	}
+	
 	public void setKills(int kills) {
 		this.kills = kills;
 	}
@@ -97,6 +103,18 @@ public class UserData {
 		if(killstreak>top_killstreak) {
 			top_killstreak=killstreak;
 		}
+	}
+	
+	public void setResets(int resets) {
+		this.resets = resets;
+	}
+	
+	public void reset(boolean use) {
+		this.resets=use?this.resets-1:this.resets;
+		this.kills = 0;
+		this.killstreak = 0;
+		this.top_killstreak = 0;
+		this.deaths = 0;
 	}
 
 }

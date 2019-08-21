@@ -13,7 +13,6 @@ leaderboard-killstreak-enabled: false
 leaderboard-killstreak-header: '&7Top 10 Killstreaks'
 leaderboard-killstreak-location: 'world, 0.0, 0.0, 0.0'
 
-
 stats-command: 
   - '&8-=-=-[ &aMy Statistics &8]-=-=-'
   - '&7'
