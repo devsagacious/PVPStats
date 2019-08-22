@@ -21,7 +21,7 @@ public class PlaceholderAPIHook extends me.clip.placeholderapi.expansion.Placeho
 
 	@Override
 	public String getIdentifier() {
-		return "kitstats";
+		return "pvpstats";
 	}
 
 	@Override
@@ -33,10 +33,8 @@ public class PlaceholderAPIHook extends me.clip.placeholderapi.expansion.Placeho
     public String onPlaceholderRequest(Player p, String id){
 		if(p!=null) {
 		UserData ps = Core.getInstance().dh.getData(p);
-		if(Core.getInstance().getConfig().getBoolean("levels-enabled")) {
 		if(id.equals("level")) {
-			return "" + ps.getKills()/Core.getInstance().getConfig().getInt("levels-kills-interval");
-		}
+			return "" + Core.getInstance().getLevel(ps.getKills());
 		}
 		if(id.equals("kills")) {
 			return "" + ps.getKills();
@@ -52,9 +50,6 @@ public class PlaceholderAPIHook extends me.clip.placeholderapi.expansion.Placeho
 		}
 		if(id.equals("topkillstreak")) {
 			return "" + ps.getTopKillstreak();
-		}
-		if(id.equals("level")) {
-			return Core.getInstance().getLevel(ps.getKills());
 		}
 		}
 		return null;

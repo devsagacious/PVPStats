@@ -31,3 +31,7 @@ levels:
   - '&6Rookie' #Lvl 1.
   - '&aKiller' #Lvl 2.
   - '&cMurderer' #Lvl 3.
+
+#Requires Vault  
+use-format: false
+format: "&7[%level%&7] %prefix%&7%player%&8: &7%suffix%%message%"

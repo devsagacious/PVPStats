@@ -115,7 +115,6 @@ public class LeaderboardHandler implements Listener{
     return temp;
 	}
 	
-	// Zet uit dat je armor enzo kan equippen!
 	public LeaderboardHandler() {
 		Bukkit.getPluginManager().registerEvents(this, Core.getInstance());
 		FileConfiguration conf = Core.getInstance().getConfig();
@@ -126,7 +125,7 @@ public class LeaderboardHandler implements Listener{
 			lke_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2]), Double.valueOf(l[3]));
 			kill_hologram.add(new Hologram(lke_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-kills-header"))));
 			for(int i = 0; i < 10; i++) {
-				lke_l.setY(lke_l.getY()-0.2D);
+				lke_l.setY(lke_l.getY()-0.3D);
 				kill_hologram.add(new Hologram(lke_l, format.replaceAll("%number%", ""+(i+1)).replaceAll("%name%", "None").replaceAll("%integer%", "0")));
 			}
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), new Runnable() {
@@ -141,7 +140,7 @@ public class LeaderboardHandler implements Listener{
 			lde_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2]), Double.valueOf(l[3]));
 			deaths_hologram.add(new Hologram(lde_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-deaths-header"))));
 			for(int i = 0; i < 10; i++) {
-				lde_l.setY(lde_l.getY()-0.2D);
+				lde_l.setY(lde_l.getY()-0.3D);
 				deaths_hologram.add(new Hologram(lde_l, format.replaceAll("%number%", ""+(i+1)).replaceAll("%name%", "None").replaceAll("%integer%", "0")));
 			}
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), new Runnable() {
@@ -156,7 +155,7 @@ public class LeaderboardHandler implements Listener{
 			lkie_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2]), Double.valueOf(l[3]));
 			killstreak_hologram.add(new Hologram(lkie_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-killstreak-header"))));
 			for(int i = 0; i < 10; i++) {
-				lkie_l.setY(lkie_l.getY()-0.2D);
+				lkie_l.setY(lkie_l.getY()-0.3D);
 				killstreak_hologram.add(new Hologram(lkie_l, format.replaceAll("%number%", ""+(i+1)).replaceAll("%name%", "None").replaceAll("%integer%", "0")));
 			}
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), new Runnable() {
@@ -172,15 +171,15 @@ public class LeaderboardHandler implements Listener{
 		FileConfiguration conf = YamlConfiguration.loadConfiguration(f);
 		if(!kill_hologram.isEmpty()) {
 			Location l = kill_hologram.get(0).getLocation();
-			conf.set("leaderboard-kills-location", l.getWorld().getName() + "," + l.getX() + "," + (l.getY()+2) + "," + l.getZ());
+			conf.set("leaderboard-kills-location", l.getWorld().getName() + "," + l.getX() + "," + (l.getY()+3) + "," + l.getZ());
 		}
         if(!deaths_hologram.isEmpty()) {
         	Location l = deaths_hologram.get(0).getLocation();
-			conf.set("leaderboard-deaths-location", l.getWorld().getName() + "," + l.getX() + "," + (l.getY()+2) + "," + l.getZ());
+			conf.set("leaderboard-deaths-location", l.getWorld().getName() + "," + l.getX() + "," + (l.getY()+3) + "," + l.getZ());
 		}
         if(!killstreak_hologram.isEmpty()) {
         	Location l = killstreak_hologram.get(0).getLocation();
-			conf.set("leaderboard-killstreak-location", l.getWorld().getName() + "," + l.getX() + "," + (l.getY()+2) + "," + l.getZ());
+			conf.set("leaderboard-killstreak-location", l.getWorld().getName() + "," + l.getX() + "," + (l.getY()+3) + "," + l.getZ());
         }
         try {
 			conf.save(f);

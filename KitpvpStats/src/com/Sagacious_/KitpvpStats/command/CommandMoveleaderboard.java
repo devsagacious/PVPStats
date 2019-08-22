@@ -46,7 +46,7 @@ public class CommandMoveleaderboard implements CommandExecutor{
 				Location tp = p.getPlayer().getLocation();
 				toMove.get(0).teleport(tp);
 				for(int i = 1; i < toMove.size(); i++) {
-					tp.setY(tp.getY()-0.2D);
+					tp.setY(tp.getY()-0.3D);
 					toMove.get(i).teleport(tp);
 				}
 				p.sendMessage("§c§lPVPStats §8| §rMoved leaderboard to your location!");

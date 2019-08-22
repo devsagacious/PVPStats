@@ -19,42 +19,42 @@ public class PlaceholdersHook {
 
 	public PlaceholdersHook() {
 		if(Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
-			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(Core.getInstance(), "kills", new be.maximvdw.placeholderapi.PlaceholderReplacer() {
+			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(Core.getInstance(), "pvpstats_kills", new be.maximvdw.placeholderapi.PlaceholderReplacer() {
 				@Override
 				public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent e) {
 					UserData data = Core.getInstance().dh.getData(e.getPlayer());
 					return ""+data.getKills();
 				}
 			});
-			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(Core.getInstance(), "deaths", new be.maximvdw.placeholderapi.PlaceholderReplacer() {
+			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(Core.getInstance(), "pvpstats_deaths", new be.maximvdw.placeholderapi.PlaceholderReplacer() {
 				@Override
 				public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent e) {
 					UserData data = Core.getInstance().dh.getData(e.getPlayer());
 					return ""+data.getDeaths();
 				}
 			});
-			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(Core.getInstance(), "killstreak", new be.maximvdw.placeholderapi.PlaceholderReplacer() {
+			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(Core.getInstance(), "pvpstats_killstreak", new be.maximvdw.placeholderapi.PlaceholderReplacer() {
 				@Override
 				public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent e) {
 					UserData data = Core.getInstance().dh.getData(e.getPlayer());
 					return ""+data.getKillstreak();
 				}
 			});
-			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(Core.getInstance(), "top_killstreak", new be.maximvdw.placeholderapi.PlaceholderReplacer() {
+			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(Core.getInstance(), "pvpstats_top_killstreak", new be.maximvdw.placeholderapi.PlaceholderReplacer() {
 				@Override
 				public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent e) {
 					UserData data = Core.getInstance().dh.getData(e.getPlayer());
 					return ""+data.getTopKillstreak();
 				}
 			});
-			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(Core.getInstance(), "kdr", new be.maximvdw.placeholderapi.PlaceholderReplacer() {
+			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(Core.getInstance(), "pvpstats_kdr", new be.maximvdw.placeholderapi.PlaceholderReplacer() {
 				@Override
 				public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent e) {
 					UserData data = Core.getInstance().dh.getData(e.getPlayer());
 					return ""+getKDR(data);
 				}
 			});
-			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(Core.getInstance(), "level", new be.maximvdw.placeholderapi.PlaceholderReplacer() {
+			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(Core.getInstance(), "pvpstats_level", new be.maximvdw.placeholderapi.PlaceholderReplacer() {
 				@Override
 				public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent e) {
 					UserData data = Core.getInstance().dh.getData(e.getPlayer());

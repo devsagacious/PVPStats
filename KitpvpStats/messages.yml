@@ -1,3 +1,4 @@
 syntax-error: '&c&lPVPStats &8| &7Invalid command syntax, use %command_usage%!'
 reset-none: '&c&lPVPStats &8| &7You do not own any resets!'
 reset: '&c&lPVPStatistics &8| &7You have reset your statistics'
+reset-received: '&c&lPVPStatistics &8| &7You have received &4%amount% &7resets'

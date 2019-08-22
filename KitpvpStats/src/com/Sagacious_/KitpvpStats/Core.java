@@ -12,6 +12,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import com.Sagacious_.KitpvpStats.api.hook.PlaceholderAPIHook;
 import com.Sagacious_.KitpvpStats.api.hook.PlaceholdersHook;
+import com.Sagacious_.KitpvpStats.api.hook.VaultHook;
 import com.Sagacious_.KitpvpStats.command.CommandAdminreset;
 import com.Sagacious_.KitpvpStats.command.CommandLeaderboardrefresh;
 import com.Sagacious_.KitpvpStats.command.CommandMoveleaderboard;
@@ -46,11 +47,14 @@ public class Core extends JavaPlugin{
 		kh = new KillstreakHandler();
 		Bukkit.getPluginManager().registerEvents(new PVPHandler(), this);
 		getCommand("leaderboardrefresh").setExecutor(new CommandLeaderboardrefresh());
+		if(Bukkit.getPluginManager().isPluginEnabled("Vault")) {
+			new VaultHook();
+		}
 		if(Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
 			new PlaceholdersHook();
 		}
 		if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-			new PlaceholderAPIHook();
+			new PlaceholderAPIHook().register();
 		}
 	}
 
