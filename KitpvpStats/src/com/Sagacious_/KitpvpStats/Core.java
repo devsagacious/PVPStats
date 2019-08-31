@@ -21,8 +21,8 @@ import com.Sagacious_.KitpvpStats.command.CommandStatsreset;
 import com.Sagacious_.KitpvpStats.data.DataHandler;
 import com.Sagacious_.KitpvpStats.data.UserData;
 import com.Sagacious_.KitpvpStats.handler.ActivityHandler;
+import com.Sagacious_.KitpvpStats.handler.AntistatsHandler;
 import com.Sagacious_.KitpvpStats.handler.KillstreakHandler;
-import com.Sagacious_.KitpvpStats.handler.PVPHandler;
 import com.Sagacious_.KitpvpStats.leaderboard.LeaderboardHandler;
 
 public class Core extends JavaPlugin{
@@ -36,6 +36,9 @@ public class Core extends JavaPlugin{
 	public LeaderboardHandler lh;
 	public KillstreakHandler kh;
 	
+	public PlaceholderAPIHook pa = null;
+	public PlaceholdersHook ph = null;
+	
 	@Override
 	public void onEnable() {
 		instance = this;
@@ -45,16 +48,16 @@ public class Core extends JavaPlugin{
 	    new CommandAdminreset(); new CommandStatsreset();
 		lh = new LeaderboardHandler();
 		kh = new KillstreakHandler();
-		Bukkit.getPluginManager().registerEvents(new PVPHandler(), this);
+		new AntistatsHandler();
 		getCommand("leaderboardrefresh").setExecutor(new CommandLeaderboardrefresh());
 		if(Bukkit.getPluginManager().isPluginEnabled("Vault")) {
 			new VaultHook();
 		}
 		if(Bukkit.getPluginManager().isPluginEnabled("MVdWPlaceholderAPI")) {
-			new PlaceholdersHook();
+			ph = new PlaceholdersHook();
 		}
 		if(Bukkit.getPluginManager().isPluginEnabled("PlaceholderAPI")) {
-			new PlaceholderAPIHook().register();
+			pa = new PlaceholderAPIHook();pa.register();
 		}
 	}
 

@@ -14,6 +14,7 @@ import org.bukkit.plugin.RegisteredServiceProvider;
 
 import com.Sagacious_.KitpvpStats.Core;
 
+
 import net.milkbowl.vault.chat.Chat;
 
 public class VaultHook implements Listener{
@@ -52,7 +53,14 @@ public VaultHook() {
 @EventHandler
 public void onFormat(AsyncPlayerChatEvent e) {
 	if(use) {
-		e.setFormat(format.replaceAll("%level%", Core.getInstance().getLevel(Core.getInstance().dh.getData(e.getPlayer()).getKills())).replaceAll("%prefix%", chat.getPlayerPrefix(e.getPlayer())).replaceAll("%player%", e.getPlayer().getName()).replaceAll("%suffix%", chat.getPlayerSuffix(e.getPlayer())).replaceAll("%message%", e.getMessage()));
+		String f = format.replaceAll("%level%", Core.getInstance().getLevel(Core.getInstance().dh.getData(e.getPlayer()).getKills())).replaceAll("%prefix%", chat.getPlayerPrefix(e.getPlayer())).replaceAll("%player%", e.getPlayer().getName()).replaceAll("%suffix%", chat.getPlayerSuffix(e.getPlayer())).replaceAll("%message%", e.getMessage());
+		if(Core.getInstance().ph!=null) {
+			Core.getInstance().ph.format(e.getPlayer(), format);
+		}
+		if(Core.getInstance().pa!=null) {
+			me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(e.getPlayer(), format);
+		}
+		e.setFormat(f);
 	}
 }
 }

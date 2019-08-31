@@ -1,5 +1,6 @@
 package com.Sagacious_.KitpvpStats.command;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,6 +15,7 @@ import com.Sagacious_.KitpvpStats.Core;
 import com.Sagacious_.KitpvpStats.leaderboard.LeaderboardHandler.Hologram;
 
 public class CommandMoveleaderboard implements CommandExecutor{
+	private DecimalFormat df = new DecimalFormat("####0.0##############");
 	
 	public CommandMoveleaderboard() {
 		Core.getInstance().getCommand("moveleaderboard").setExecutor(this);
@@ -32,18 +34,25 @@ public class CommandMoveleaderboard implements CommandExecutor{
 				return true;
 			}
 			List<Hologram> toMove = null;
+			boolean f = false;
+			boolean k=false;
+			boolean d=false;
+			boolean ki=false;
 			if(args[0].equalsIgnoreCase("kills")) {
-				toMove = Core.getInstance().lh.kill_hologram;
+				toMove = Core.getInstance().lh.kill_hologram;f=true;k=true;
 			}else if(args[0].equalsIgnoreCase("deaths")) {
-				toMove = Core.getInstance().lh.deaths_hologram;
+				toMove = Core.getInstance().lh.deaths_hologram;f=true;d=true;
 			}else if(args[0].equalsIgnoreCase("killstreak")) {
-				toMove = Core.getInstance().lh.killstreak_hologram;
+				toMove = Core.getInstance().lh.killstreak_hologram;f=true;ki=true;
 			}
-			if(toMove == null) {
+			if(toMove == null || !f) {
 				p.sendMessage("§c§lPVPStats §8| §rInvalid command syntax, use /moveleaderboard <kills/deaths/killstreak>");
 				return true;
 			}else {
-				Location tp = p.getPlayer().getLocation();
+				if(f&&toMove.isEmpty()) {
+					Core.getInstance().lh.setupLeaderboard(k, d, ki, p.getLocation());
+				}else {
+				Location tp = new Location(p.getWorld(), Double.valueOf(df.format(p.getLocation().getX()).replaceAll(",", ".")), Double.valueOf(df.format(p.getLocation().getY()).replaceAll(",", ".")), Double.valueOf(df.format(p.getLocation().getZ()).replaceAll(",", ".")));
 				toMove.get(0).teleport(tp);
 				for(int i = 1; i < toMove.size(); i++) {
 					tp.setY(tp.getY()-0.3D);
@@ -51,6 +60,7 @@ public class CommandMoveleaderboard implements CommandExecutor{
 				}
 				p.sendMessage("§c§lPVPStats §8| §rMoved leaderboard to your location!");
 				return true;
+			}
 			}
 		}
 		return false;

@@ -2,6 +2,7 @@ package com.Sagacious_.KitpvpStats.leaderboard;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -113,6 +114,49 @@ public class LeaderboardHandler implements Listener{
 	      }
 	      Collections.sort(temp, Collections.reverseOrder());
     return temp;
+	}
+	private DecimalFormat df = new DecimalFormat("####0.0##############");
+	public void setupLeaderboard(boolean kills, boolean deaths, boolean killstreak, Location loc) {
+		FileConfiguration conf = Core.getInstance().getConfig();
+		if(kills) {
+			lke_l = new Location(loc.getWorld(), Double.valueOf(df.format(loc.getX()).replaceAll(",", ".")), Double.valueOf(df.format(loc.getY()).replaceAll(",", ".")), Double.valueOf(df.format(loc.getZ()).replaceAll(",", ".")));
+			kill_hologram.add(new Hologram(lke_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-kills-header"))));
+			for(int i = 0; i < 10; i++) {
+				lke_l.setY(lke_l.getY()-0.3D);
+				kill_hologram.add(new Hologram(lke_l, format.replaceAll("%number%", ""+(i+1)).replaceAll("%name%", "None").replaceAll("%integer%", "0")));
+			}
+			Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), new Runnable() {
+				public void run() {
+					refreshKills();
+				}
+			}, 40L, 20L*conf.getInt("leaderboard-update-time"));
+		}
+		else if(deaths) {
+			lde_l = new Location(loc.getWorld(), Double.valueOf(df.format(loc.getX()).replaceAll(",", ".")), Double.valueOf(df.format(loc.getY()).replaceAll(",", ".")), Double.valueOf(df.format(loc.getZ()).replaceAll(",", ".")));
+			deaths_hologram.add(new Hologram(lde_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-deaths-header"))));
+			for(int i = 0; i < 10; i++) {
+				lde_l.setY(lde_l.getY()-0.3D);
+				deaths_hologram.add(new Hologram(lde_l, format.replaceAll("%number%", ""+(i+1)).replaceAll("%name%", "None").replaceAll("%integer%", "0")));
+			}
+			Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), new Runnable() {
+				public void run() {
+					refreshDeaths();
+				}
+			}, 60L, 20L*conf.getInt("leaderboard-update-time"));
+		}
+		else if(killstreak) {
+			lde_l = new Location(loc.getWorld(), Double.valueOf(df.format(loc.getX()).replaceAll(",", ".")), Double.valueOf(df.format(loc.getY()).replaceAll(",", ".")), Double.valueOf(df.format(loc.getZ()).replaceAll(",", ".")));
+			killstreak_hologram.add(new Hologram(lkie_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-killstreak-header"))));
+			for(int i = 0; i < 10; i++) {
+				lkie_l.setY(lkie_l.getY()-0.3D);
+				killstreak_hologram.add(new Hologram(lkie_l, format.replaceAll("%number%", ""+(i+1)).replaceAll("%name%", "None").replaceAll("%integer%", "0")));
+			}
+			Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), new Runnable() {
+				public void run() {
+					refreshKillstreak();
+				}
+			}, 80L, 20L*conf.getInt("leaderboard-update-time"));
+		}
 	}
 	
 	public LeaderboardHandler() {

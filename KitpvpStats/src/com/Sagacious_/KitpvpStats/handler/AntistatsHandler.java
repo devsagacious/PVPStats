@@ -1,0 +1,119 @@
+package com.Sagacious_.KitpvpStats.handler;
+
+import java.io.File;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.UUID;
+
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
+import org.bukkit.event.Listener;
+import org.bukkit.event.entity.PlayerDeathEvent;
+import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.event.player.PlayerQuitEvent;
+
+import com.Sagacious_.KitpvpStats.Core;
+import com.Sagacious_.KitpvpStats.data.UserData;
+
+public class AntistatsHandler implements Listener{
+	
+	private HashMap<Player, UUID> last_kill = new HashMap<Player, UUID>();
+	private HashMap<UUID, Integer> kills = new HashMap<UUID, Integer>();
+	private HashMap<Player, Integer> tasks = new HashMap<Player, Integer>();
+	private List<UUID> timeoutList = new ArrayList<UUID>();
+	
+	private int max_kills;
+	private int max_kills_time;
+	private int timeout;
+	private String message;
+	
+	public AntistatsHandler() {
+		Bukkit.getPluginManager().registerEvents(this, Core.getInstance());
+		FileConfiguration conf = Core.getInstance().getConfig();
+		if(!conf.isSet("antistats-max-kills")) {
+			conf.set("antistats-max-kills", 10);
+			conf.set("antistats-max-kills-time", 300);
+			conf.set("antistats-timeout", 600);
+			conf.set("antistats-message", "&cYou have killed that player too many times, you will not increase your statistics for &410 minutes");
+			try {
+				conf.save(new File(Core.getInstance().getDataFolder(), "config.yml"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
+		max_kills = conf.getInt("antistats-max-kills");
+		max_kills_time = conf.getInt("antistats-max-kills-time");
+		timeout = conf.getInt("antistats-timeout");
+		message = ChatColor.translateAlternateColorCodes('&', conf.getString("antistats-message"));
+	}
+	@EventHandler
+	public void onJoin(PlayerJoinEvent e) {
+		int t = Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), new Runnable() {
+			public void run() {
+				if(kills.containsKey(e.getPlayer().getUniqueId())) {
+					kills.remove(e.getPlayer().getUniqueId());
+				}
+			}
+		}, max_kills_time*20L, max_kills_time*20L);
+		tasks.put(e.getPlayer(), t);
+	}
+	
+	@EventHandler
+	public void onQuit(PlayerQuitEvent e) {
+		if(tasks.containsKey(e.getPlayer())) {
+			Bukkit.getScheduler().cancelTask(tasks.get(e.getPlayer()));
+			tasks.remove(e.getPlayer());
+		}
+		if(last_kill.containsKey(e.getPlayer())) {
+			last_kill.remove(e.getPlayer());
+		}
+	}
+	
+	
+	@EventHandler(priority = EventPriority.HIGH)
+	public void onDeath(PlayerDeathEvent e) {
+		if(max_kills>0) {
+	       if(e.getEntity().getKiller()instanceof Player) {
+	    	   Player p = (Player)e.getEntity().getKiller();
+	    	   if(timeoutList.contains(p.getUniqueId())) {
+	    		   p.sendMessage(message);
+	    		   return;
+	    	   }
+	    	   if(last_kill.containsKey(p) && last_kill.get(p).equals(e.getEntity().getUniqueId())) {
+	    	   kills.put(p.getUniqueId(), kills.get(p.getUniqueId())+1);
+	    	   if(kills.get(p.getUniqueId())>max_kills) {
+	    		   timeoutList.add(p.getUniqueId());
+	    		   Bukkit.getScheduler().scheduleSyncDelayedTask(Core.getInstance(), new Runnable() {
+					public void run() {
+						if(timeoutList.contains(p.getUniqueId())) {
+							timeoutList.remove(p.getUniqueId());
+						}
+					}
+				}, timeout*20L);
+	    	   }
+	    	   }else {
+	    		   last_kill.put(p, e.getEntity().getUniqueId());
+	    		   kills.put(p.getUniqueId(), 1);
+	    	   }
+	       }
+		}
+		if(!timeoutList.contains(e.getEntity().getUniqueId())) {
+			UserData u = Core.getInstance().dh.getData(e.getEntity());
+ 		   if(u!=null) {
+ 			u.setKillstreak(0);u.setDeaths(u.getDeaths()+1);
+ 		   }
+ 			if(e.getEntity().getKiller()!=null && e.getEntity().getKiller() instanceof Player) {
+ 				UserData u2 = Core.getInstance().dh.getData(e.getEntity().getKiller());
+ 				u2.setKillstreak(u2.getKillstreak()+1);
+ 				u2.setKills(u2.getKills()+1);
+ 				Core.getInstance().kh.reward(e.getEntity().getKiller(), u2.getKillstreak());
+ 			}
+		}
+	}
+}

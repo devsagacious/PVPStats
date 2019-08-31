@@ -3,15 +3,15 @@ leaderboard-update-time: 120
 
 leaderboard-kills-enabled: false
 leaderboard-kills-header: '&7Top 10 kills'
-leaderboard-kills-location: 'world, 0.0, 0.0, 0.0'
+leaderboard-kills-location: 'world, 0.0, 5.0, 0.0'
 
 leaderboard-deaths-enabled: false
 leaderboard-deaths-header: '&7Top 10 Deaths'
-leaderboard-deaths-location: 'world, 0.0, 0.0, 0.0'
+leaderboard-deaths-location: 'world, 0.0, 5.0, 0.0'
 
 leaderboard-killstreak-enabled: false
 leaderboard-killstreak-header: '&7Top 10 Killstreaks'
-leaderboard-killstreak-location: 'world, 0.0, 0.0, 0.0'
+leaderboard-killstreak-location: 'world, 0.0, 5.0, 0.0'
 
 stats-command: 
   - '&8-=-=-[ &aMy Statistics &8]-=-=-'
@@ -35,3 +35,10 @@ levels:
 #Requires Vault  
 use-format: false
 format: "&7[%level%&7] %prefix%&7%player%&8: &7%suffix%%message%"
+
+
+#Anti stats booster, set 0 to disable
+antistats-max-kills: 15
+antistats-max-kills-time: 300
+antistats-timeout: 600
+antistats-message: '&cYou have killed a single player too many times, you will not increase your statistics for &410 minutes'

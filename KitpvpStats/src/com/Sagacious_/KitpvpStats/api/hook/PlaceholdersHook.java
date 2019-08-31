@@ -3,9 +3,12 @@ package com.Sagacious_.KitpvpStats.api.hook;
 import java.text.DecimalFormat;
 
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 
 import com.Sagacious_.KitpvpStats.Core;
 import com.Sagacious_.KitpvpStats.data.UserData;
+
+import be.maximvdw.placeholderapi.PlaceholderAPI;
 
 
 
@@ -62,6 +65,10 @@ public class PlaceholdersHook {
 				}
 			});
 	}
+	}
+	
+	public String format(Player p, String s) {
+		return PlaceholderAPI.replacePlaceholders(p, s);
 	}
 }
 
