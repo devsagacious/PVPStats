@@ -81,13 +81,10 @@ public class AntistatsHandler implements Listener{
 		if(max_kills>0) {
 	       if(e.getEntity().getKiller()instanceof Player) {
 	    	   Player p = (Player)e.getEntity().getKiller();
-	    	   if(timeoutList.contains(p.getUniqueId())) {
-	    		   p.sendMessage(message);
-	    		   return;
-	    	   }
 	    	   if(last_kill.containsKey(p) && last_kill.get(p).equals(e.getEntity().getUniqueId())) {
 	    	   kills.put(p.getUniqueId(), kills.get(p.getUniqueId())+1);
 	    	   if(kills.get(p.getUniqueId())>max_kills) {
+	    		   p.sendMessage(message);
 	    		   timeoutList.add(p.getUniqueId());
 	    		   Bukkit.getScheduler().scheduleSyncDelayedTask(Core.getInstance(), new Runnable() {
 					public void run() {
@@ -103,17 +100,17 @@ public class AntistatsHandler implements Listener{
 	    	   }
 	       }
 		}
-		if(!timeoutList.contains(e.getEntity().getUniqueId())) {
 			UserData u = Core.getInstance().dh.getData(e.getEntity());
  		   if(u!=null) {
  			u.setKillstreak(0);u.setDeaths(u.getDeaths()+1);
  		   }
  			if(e.getEntity().getKiller()!=null && e.getEntity().getKiller() instanceof Player) {
+ 				if(!timeoutList.contains(e.getEntity().getKiller().getUniqueId())) {
  				UserData u2 = Core.getInstance().dh.getData(e.getEntity().getKiller());
  				u2.setKillstreak(u2.getKillstreak()+1);
  				u2.setKills(u2.getKills()+1);
  				Core.getInstance().kh.reward(e.getEntity().getKiller(), u2.getKillstreak());
  			}
+ 			}
 		}
-	}
 }
