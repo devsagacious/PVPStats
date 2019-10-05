@@ -108,7 +108,18 @@ public class AntistatsHandler implements Listener{
  				if(!timeoutList.contains(e.getEntity().getKiller().getUniqueId())) {
  				UserData u2 = Core.getInstance().dh.getData(e.getEntity().getKiller());
  				u2.setKillstreak(u2.getKillstreak()+1);
+ 				String l = Core.getInstance().getLevel(u2.getKills());
  				u2.setKills(u2.getKills()+1);
+ 				String l2 = Core.getInstance().getLevel(u2.getKills());
+ 				if(!l.equals(l2)) {
+ 					String s = Core.getInstance().getConfig().getStringList("levels").get(Core.getInstance().getLevelInt(u2.getKills()));
+ 					if(s.contains(":")) {
+ 						String[] f = s.split(":");
+ 						for(int i = 1; i < f.length; i++) {
+ 							Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ChatColor.translateAlternateColorCodes('&', f[i].replace("%player%", e.getEntity().getKiller().getName())));
+ 						}
+ 					}
+ 				}
  				Core.getInstance().kh.reward(e.getEntity().getKiller(), u2.getKillstreak());
  			}
  			}

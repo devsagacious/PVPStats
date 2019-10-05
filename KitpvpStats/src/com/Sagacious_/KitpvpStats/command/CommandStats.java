@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -24,9 +25,21 @@ public class CommandStats implements CommandExecutor{
 	@Override
 	public boolean onCommand(CommandSender sender, Command arg1, String arg2, String[] arg3) {
 		if(sender instanceof Player) {
-			UserData data = Core.getInstance().dh.getData((Player)sender);
+			UserData data = null;
+			String pl = Core.getInstance().getConfig().getString("me");
+			if(arg3.length > 0) {
+				Player p = Bukkit.getPlayerExact(arg3[0]);
+				if(p == null) {
+					sender.sendMessage("§cUnknown player §4" + arg3[0]);
+				return true;
+				}
+				data = Core.getInstance().dh.getData(p);
+				pl = p.getName() + "'s";
+			}else {
+			 data = Core.getInstance().dh.getData((Player)sender);
+			}
 			for(String s : stat) {
-				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s.replaceAll("%kills%", ""+data.getKills()).replaceAll("%deaths%", ""+data.getDeaths()).replaceAll("%killstreak%", ""+data.getKillstreak()).replaceAll("%top_killstreak%", ""+data.getTopKillstreak()).replaceAll("%level%", Core.getInstance().getLevel(data.getKills()))));
+				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s.replace("%player%", pl).replace("%kills%", ""+data.getKills()).replace("%deaths%", ""+data.getDeaths()).replace("%killstreak%", ""+data.getKillstreak()).replace("%top_killstreak%", ""+data.getTopKillstreak()).replace("%level%", Core.getInstance().getLevel(data.getKills()))));
 			}
 			return true;
 		}
