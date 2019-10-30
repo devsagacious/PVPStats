@@ -82,7 +82,11 @@ public class AntistatsHandler implements Listener{
 	       if(e.getEntity().getKiller()instanceof Player) {
 	    	   Player p = (Player)e.getEntity().getKiller();
 	    	   if(last_kill.containsKey(p) && last_kill.get(p).equals(e.getEntity().getUniqueId())) {
+	    		   if(kills.containsKey(p.getUniqueId())) {
 	    	   kills.put(p.getUniqueId(), kills.get(p.getUniqueId())+1);
+	    		   }else {
+	    			   kills.put(p.getUniqueId(), 1);
+	    		   }
 	    	   if(kills.get(p.getUniqueId())>max_kills) {
 	    		   p.sendMessage(message);
 	    		   timeoutList.add(p.getUniqueId());
