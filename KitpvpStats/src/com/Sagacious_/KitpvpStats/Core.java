@@ -3,15 +3,11 @@ package com.Sagacious_.KitpvpStats;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.Reader;
 import java.nio.file.Files;
 import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.Sagacious_.KitpvpStats.api.hook.PlaceholderAPIHook;
@@ -28,6 +24,7 @@ import com.Sagacious_.KitpvpStats.handler.ActivityHandler;
 import com.Sagacious_.KitpvpStats.handler.AntistatsHandler;
 import com.Sagacious_.KitpvpStats.handler.KillstreakHandler;
 import com.Sagacious_.KitpvpStats.leaderboard.LeaderboardHandler;
+import com.Sagacious_.KitpvpStats.util.FileUtil;
 
 public class Core extends JavaPlugin{
 	
@@ -42,11 +39,17 @@ public class Core extends JavaPlugin{
 	
 	public PlaceholderAPIHook pa = null;
 	public PlaceholdersHook ph = null;
+	public String version = "1.0";
 	
 	@Override
 	public void onEnable() {
 		instance = this;
 		setupConfig();
+		if (!getConfig().getString("version").equals(version)) {
+            getLogger().info("Your configuration file was not up to date. Updating it now...");
+            new FileUtil().updateConfig();
+            getLogger().info("Configuration file updated.");
+        }
 		dh = new DataHandler();
 	    new ActivityHandler(); new CommandStats(); new CommandMoveleaderboard(); new Messages();
 	    new CommandAdminreset(); new CommandStatsreset();
@@ -87,16 +90,6 @@ public class Core extends JavaPlugin{
 	private File dataFolder;
 	private File config;
 	
-	private void setupDefaults(FileConfiguration conf) {
-		try {
-	    Reader def = new InputStreamReader(Core.getInstance().getResource("config.yml"), "UTF8");
-	    if (def != null) {
-	        YamlConfiguration defc = YamlConfiguration.loadConfiguration(def);
-	        conf.setDefaults(defc);
-	    }
-		}catch(Exception e) {e.printStackTrace();}
-	}
-	
 	private void setupConfig() {
 		dataFolder = getDataFolder();
 		if(!dataFolder.exists()) {
@@ -110,8 +103,5 @@ public class Core extends JavaPlugin{
 				e.printStackTrace();
 			}
 		}
-		FileConfiguration conf = YamlConfiguration.loadConfiguration(config);
-		setupDefaults(conf);
-		conf.options().copyDefaults(true);
 	}
 }

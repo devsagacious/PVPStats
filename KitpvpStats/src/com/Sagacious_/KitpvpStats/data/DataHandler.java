@@ -23,9 +23,7 @@ public class DataHandler {
 		for(File f : dir.listFiles()) {
 			FileConfiguration conf = YamlConfiguration.loadConfiguration(f);
 			int resets = 0;
-			if(conf.contains("resets")) {
-				resets=conf.getInt("resets");
-			}
+			resets=conf.getInt("resets");
 			UserData d = new UserData(UUID.fromString(f.getName().replaceAll(".yml", "")), conf.getString("name"), conf.getInt("kills"), conf.getInt("deaths"), conf.getInt("killstreak"), conf.getInt("top_killstreak"), resets);
 		    data.add(d);
 		}

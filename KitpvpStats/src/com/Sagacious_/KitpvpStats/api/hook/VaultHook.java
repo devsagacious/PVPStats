@@ -1,7 +1,6 @@
 package com.Sagacious_.KitpvpStats.api.hook;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -13,7 +12,6 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 import org.bukkit.plugin.RegisteredServiceProvider;
 
 import com.Sagacious_.KitpvpStats.Core;
-
 
 import net.milkbowl.vault.chat.Chat;
 
@@ -36,18 +34,8 @@ public VaultHook() {
 	setupChat();
 	File f = new File(Core.getInstance().getDataFolder(), "config.yml");
 	FileConfiguration conf = YamlConfiguration.loadConfiguration(f);
-	if(!conf.isSet("format")) {
-		conf.set("use-format", false);
-		conf.set("format", "&7[%level%&7] %prefix%&7%player%&8: &7%suffix%%message%");
-		try {
-			conf.save(f);
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}else {
 		use = conf.getBoolean("use-format");
 		format = ChatColor.translateAlternateColorCodes('&', conf.getString("format"));
-	}
 }
 
 @EventHandler

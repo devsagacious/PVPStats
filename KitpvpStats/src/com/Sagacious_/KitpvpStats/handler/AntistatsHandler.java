@@ -1,7 +1,5 @@
 package com.Sagacious_.KitpvpStats.handler;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,17 +34,6 @@ public class AntistatsHandler implements Listener{
 	public AntistatsHandler() {
 		Bukkit.getPluginManager().registerEvents(this, Core.getInstance());
 		FileConfiguration conf = Core.getInstance().getConfig();
-		if(!conf.isSet("antistats-max-kills")) {
-			conf.set("antistats-max-kills", 10);
-			conf.set("antistats-max-kills-time", 300);
-			conf.set("antistats-timeout", 600);
-			conf.set("antistats-message", "&cYou have killed that player too many times, you will not increase your statistics for &410 minutes");
-			try {
-				conf.save(new File(Core.getInstance().getDataFolder(), "config.yml"));
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
-		}
 		max_kills = conf.getInt("antistats-max-kills");
 		max_kills_time = conf.getInt("antistats-max-kills-time");
 		timeout = conf.getInt("antistats-timeout");
