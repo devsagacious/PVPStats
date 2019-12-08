@@ -4,13 +4,13 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import com.Sagacious_.KitpvpStats.Core;
-import com.Sagacious_.KitpvpStats.Messages;
 import com.Sagacious_.KitpvpStats.data.UserData;
 
 public class CommandAdminreset implements CommandExecutor{
@@ -46,7 +46,7 @@ public class CommandAdminreset implements CommandExecutor{
 			UserData data = Core.getInstance().dh.getData(p);
 			data.setResets(data.getResets()+i);
 			sender.sendMessage("§c§lPVPStats §8| §rGave §4" + p.getName() + " §c" + i + " §rresets");
-			p.sendMessage(Messages.RESET_RECEIVED.replaceAll("%amount%", ""+i));
+			p.sendMessage(ChatColor.translateAlternateColorCodes('&', Core.getInstance().getConfig().getString("reset-received")).replaceAll("%amount%", ""+i));
 		    return true;
 		}
 		Player p = Bukkit.getPlayer(args[0]);

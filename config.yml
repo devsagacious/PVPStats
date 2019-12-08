@@ -1,4 +1,4 @@
-version: '1.0'
+version: '1.1'
 
 leaderboard-format: '&6%number%. &e%name% &8| &r%integer%'
 leaderboard-update-time: 120
@@ -49,3 +49,14 @@ antistats-max-kills: 15
 antistats-max-kills-time: 300
 antistats-timeout: 600
 antistats-message: '&cYou have killed a single player too many times, you will not increase your statistics for &410 minutes'
+same-address-check: false
+
+# Messages
+syntax-error: '&c&lPVPStats &8| &7Invalid command syntax, use %command_usage%!'
+reset-none: '&c&lPVPStats &8| &7You do not own any resets!'
+reset: '&c&lPVPStatistics &8| &7You have reset your statistics'
+reset-received: '&c&lPVPStatistics &8| &7You have received &4%amount% &7resets'
+
+
+
+auto-update: false

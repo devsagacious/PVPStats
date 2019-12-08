@@ -30,6 +30,7 @@ public class AntistatsHandler implements Listener{
 	private int max_kills_time;
 	private int timeout;
 	private String message;
+	private boolean same_address_check;
 	
 	public AntistatsHandler() {
 		Bukkit.getPluginManager().registerEvents(this, Core.getInstance());
@@ -38,6 +39,7 @@ public class AntistatsHandler implements Listener{
 		max_kills_time = conf.getInt("antistats-max-kills-time");
 		timeout = conf.getInt("antistats-timeout");
 		message = ChatColor.translateAlternateColorCodes('&', conf.getString("antistats-message"));
+		same_address_check = conf.getBoolean("same-address-check");
 	}
 	@EventHandler
 	public void onJoin(PlayerJoinEvent e) {
@@ -68,6 +70,12 @@ public class AntistatsHandler implements Listener{
 		if(max_kills>0) {
 	       if(e.getEntity().getKiller()instanceof Player) {
 	    	   Player p = (Player)e.getEntity().getKiller();
+	    	   if(same_address_check&&e.getEntity()instanceof Player) {
+	    		   Player f = (Player)e.getEntity();
+	    		   if(f.getAddress().getAddress().equals(p.getAddress().getAddress())) {
+	    			   return;
+	    		   }
+	    	   }
 	    	   if(last_kill.containsKey(p) && last_kill.get(p).equals(e.getEntity().getUniqueId())) {
 	    		   if(kills.containsKey(p.getUniqueId())) {
 	    	   kills.put(p.getUniqueId(), kills.get(p.getUniqueId())+1);

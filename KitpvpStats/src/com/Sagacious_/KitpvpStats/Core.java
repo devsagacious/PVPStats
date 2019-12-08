@@ -10,6 +10,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import com.Sagacious_.KitpvpStats.Updater.Result;
 import com.Sagacious_.KitpvpStats.api.hook.PlaceholderAPIHook;
 import com.Sagacious_.KitpvpStats.api.hook.PlaceholdersHook;
 import com.Sagacious_.KitpvpStats.api.hook.VaultHook;
@@ -39,7 +40,8 @@ public class Core extends JavaPlugin{
 	
 	public PlaceholderAPIHook pa = null;
 	public PlaceholdersHook ph = null;
-	public String version = "1.0";
+	public String version = "1.1";
+	private Updater update;
 	
 	@Override
 	public void onEnable() {
@@ -50,8 +52,24 @@ public class Core extends JavaPlugin{
             new FileUtil().updateConfig();
             getLogger().info("Configuration file updated.");
         }
+		if(!getConfig().getBoolean("auto-update")) {
+			update = new Updater(this, 70578, getFile(), Updater.UpdateType.VERSION_CHECK, false);
+		if(!update.getResult().equals(Result.UPDATE_FOUND)) {
+			getLogger().info("###################");
+			getLogger().info("New version of PVPStatistics available");
+			getLogger().info("Current: " + getDescription().getVersion() + ", newest: " + update.getVersion());
+			getLogger().info("###################");
+		}
+		}else {
+			update = new Updater(this, 70578, getFile(), Updater.UpdateType.CHECK_DOWNLOAD, false);
+			if(!update.getResult().equals(Result.SUCCESS)) {
+				getLogger().info("###################");
+				getLogger().info("Installed newest version of PVPStatistics");
+				getLogger().info("###################");
+			}
+		}
 		dh = new DataHandler();
-	    new ActivityHandler(); new CommandStats(); new CommandMoveleaderboard(); new Messages();
+	    new ActivityHandler(); new CommandStats(); new CommandMoveleaderboard();
 	    new CommandAdminreset(); new CommandStatsreset();
 		lh = new LeaderboardHandler();
 		kh = new KillstreakHandler();
