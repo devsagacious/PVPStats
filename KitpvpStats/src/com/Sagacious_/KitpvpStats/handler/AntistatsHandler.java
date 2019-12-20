@@ -67,6 +67,7 @@ public class AntistatsHandler implements Listener{
 	
 	@EventHandler(priority = EventPriority.HIGH)
 	public void onDeath(PlayerDeathEvent e) {
+		if(Core.getInstance().wh.countstats(e.getEntity())) {
 		if(max_kills>0) {
 	       if(e.getEntity().getKiller()instanceof Player) {
 	    	   Player p = (Player)e.getEntity().getKiller();
@@ -123,4 +124,5 @@ public class AntistatsHandler implements Listener{
  			}
  			}
 		}
+	}
 }

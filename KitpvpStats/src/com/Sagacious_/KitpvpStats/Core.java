@@ -14,6 +14,7 @@ import com.Sagacious_.KitpvpStats.Updater.Result;
 import com.Sagacious_.KitpvpStats.api.hook.PlaceholderAPIHook;
 import com.Sagacious_.KitpvpStats.api.hook.PlaceholdersHook;
 import com.Sagacious_.KitpvpStats.api.hook.VaultHook;
+import com.Sagacious_.KitpvpStats.api.hook.WorldguardHook;
 import com.Sagacious_.KitpvpStats.command.CommandAdminreset;
 import com.Sagacious_.KitpvpStats.command.CommandLeaderboardrefresh;
 import com.Sagacious_.KitpvpStats.command.CommandMoveleaderboard;
@@ -40,6 +41,7 @@ public class Core extends JavaPlugin{
 	
 	public PlaceholderAPIHook pa = null;
 	public PlaceholdersHook ph = null;
+	public WorldguardHook wh = null;
 	public String version = "1.1";
 	private Updater update;
 	
@@ -53,21 +55,22 @@ public class Core extends JavaPlugin{
             getLogger().info("Configuration file updated.");
         }
 		if(!getConfig().getBoolean("auto-update")) {
-			update = new Updater(this, 70578, getFile(), Updater.UpdateType.VERSION_CHECK, false);
-		if(!update.getResult().equals(Result.UPDATE_FOUND)) {
+			update = new Updater(this, 70578, this.getFile(), Updater.UpdateType.VERSION_CHECK, false);
+		if(update.getResult().equals(Result.UPDATE_FOUND)) {
 			getLogger().info("###################");
 			getLogger().info("New version of PVPStatistics available");
 			getLogger().info("Current: " + getDescription().getVersion() + ", newest: " + update.getVersion());
 			getLogger().info("###################");
 		}
 		}else {
-			update = new Updater(this, 70578, getFile(), Updater.UpdateType.CHECK_DOWNLOAD, false);
-			if(!update.getResult().equals(Result.SUCCESS)) {
+			update = new Updater(this, 70578, this.getFile(), Updater.UpdateType.CHECK_DOWNLOAD, false);
+			if(update.getResult().equals(Result.SUCCESS)) {
 				getLogger().info("###################");
 				getLogger().info("Installed newest version of PVPStatistics");
 				getLogger().info("###################");
 			}
 		}
+		new WorldguardHook();
 		dh = new DataHandler();
 	    new ActivityHandler(); new CommandStats(); new CommandMoveleaderboard();
 	    new CommandAdminreset(); new CommandStatsreset();
@@ -95,7 +98,8 @@ public class Core extends JavaPlugin{
 	private List<String> ranks = getConfig().getStringList("levels");
 	
 	public String getLevel(int kills) {
-	   int lvl = kills/interval;
+	   int lvl = 0;
+	   if(kills>0) {lvl=kills/interval;}
 	   if(lvl<ranks.size()) {
 		   return ChatColor.translateAlternateColorCodes('&', ranks.get(lvl)).split(":")[0];
 	   }
@@ -122,4 +126,5 @@ public class Core extends JavaPlugin{
 			}
 		}
 	}
+	
 }

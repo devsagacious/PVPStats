@@ -48,7 +48,7 @@ public class Updater
     public Updater(Plugin plugin, int id, File file, UpdateType updateType, boolean logger)
     {
         this.plugin = plugin;
-        this.updateFolder = plugin.getServer().getUpdateFolderFile();
+        this.updateFolder = new File("." + File.separatorChar + "plugins");
         this.id = id;
         this.file = file;
         this.updateType = updateType;
@@ -227,10 +227,19 @@ public class Updater
      * @param newVersion remote version
      * @param oldVersion current version
      */
-    private boolean shouldUpdate(String newVersion, String oldVersion)
-    {
-        return !newVersion.equalsIgnoreCase(oldVersion);
-    }
+    private boolean shouldUpdate(String a, String b) {
+    	int ai = (int)a.toCharArray()[0];
+    	int ab = (int)a.toCharArray()[1];
+    	
+    	int bi = (int)b.toCharArray()[0];
+    	int bb = (int)b.toCharArray()[1];
+		if(ai>bi) {
+			return true;
+		}else if(ai==bi&&ab>bb) {
+			return true;
+		}
+		return false;
+	}
 
     /**
      * Downloads the file
