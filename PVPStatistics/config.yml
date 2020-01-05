@@ -1,0 +1,65 @@
+version: '1.2'
+
+leaderboard-format: '&6%number%. &e%name% &8| &r%integer%'
+leaderboard-update-time: 120
+
+leaderboard-kills-enabled: false
+leaderboard-kills-header: '&7Top 10 kills'
+leaderboard-kills-location: 'world, 0.0, 5.0, 0.0'
+
+leaderboard-deaths-enabled: false
+leaderboard-deaths-header: '&7Top 10 Deaths'
+leaderboard-deaths-location: 'world, 0.0, 5.0, 0.0'
+
+leaderboard-killstreak-enabled: false
+leaderboard-killstreak-header: '&7Top 10 Killstreaks'
+leaderboard-killstreak-location: 'world, 0.0, 5.0, 0.0'
+
+#{player} returns either 'My' or "PlayerExample's"
+stats-command: 
+  - '&8-=-=-[ &a%player% Statistics &8]-=-=-'
+  - '&7'
+  - '&aKills &8> &r%kills%'
+  - '&aDeaths &8> &r%deaths%'
+  - '&aKillstreak &8> &r%killstreak%'
+  - '&aTop Killstreak &8> &r%top_killstreak%'
+  - '&aLevel &8> &r%level%'
+me: 'My'  
+  
+  
+level-kills-interval: 25
+
+#Each string represents a higher level
+#You can reward a player by using : and then putting in your command, multiple commands? just keep using :
+levels:
+  - '&6Rookie' #Lvl 1.
+  - '&aKiller' #Lvl 2.
+  - '&cMurderer' #Lvl 3.
+  - '&6Command Example:eco give %player% 100:msg %player% You have reached level 4!'
+
+## Chat Formatting ##
+### - REQUIRES Vault
+#### : Support for PlaceholderAPI/MVdWPlaceholderAPI
+use-format: false
+format: "&7[%level%&7] %prefix%&7%player%&8: &7%suffix%%message%"
+
+
+#Anti stats booster, set 0 to disable
+antistats-max-kills: 15
+antistats-max-kills-time: 300
+antistats-timeout: 600
+antistats-message: '&cYou have killed a single player too many times, you will not increase your statistics for &410 minutes'
+same-address-check: false
+
+# Messages
+syntax-error: '&c&lPVPStats &8| &7Invalid command syntax, use %command_usage%!'
+reset-none: '&c&lPVPStats &8| &7You do not own any resets!'
+reset: '&c&lPVPStatistics &8| &7You have reset your statistics'
+reset-received: '&c&lPVPStatistics &8| &7You have received &4%amount% &7resets'
+
+# Only handle statistics in following worldguard regions if enabled
+worldguard-enabled: false
+worldguard-regions:
+  - '__global__'
+
+auto-update: false

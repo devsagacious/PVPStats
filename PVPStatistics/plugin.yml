@@ -1,0 +1,16 @@
+main: com.Sagacious_.KitpvpStats.Core
+name: PVPStats
+version: 2.0.5
+author: Sagacious_
+softdepend: [PlaceholderAPI, MVdWPlaceholderAPI, Vault]
+commands: 
+  stats:
+   aliases: [statistics]
+  leaderboardrefresh:
+   usage: /<command>
+  moveleaderboard:
+   aliases: [movelb] 
+  adminreset:
+   aliases: [ar]
+  statsreset:
+   aliases: [sr]  
