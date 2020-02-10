@@ -19,6 +19,7 @@ public class WorldguardHook {
 	}
 	
 	public boolean countstats(Player p) {
+		if(!enabled) {return true;}
 		if(enabled) {
 			for(com.sk89q.worldguard.protection.regions.ProtectedRegion r : com.sk89q.worldguard.bukkit.WGBukkit.getRegionManager(p.getWorld()).getApplicableRegions(p.getLocation())) {
                 for(String d : regions) {

@@ -105,6 +105,10 @@ public class UserData {
 		}
 	}
 	
+	public void setTopKillstreak(int killstreak) {
+		this.top_killstreak = killstreak;
+	}
+	
 	public void setResets(int resets) {
 		this.resets = resets;
 	}

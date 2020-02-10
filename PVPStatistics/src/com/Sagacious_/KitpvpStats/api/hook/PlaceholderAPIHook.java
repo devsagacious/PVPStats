@@ -52,6 +52,15 @@ public class PlaceholderAPIHook extends me.clip.placeholderapi.expansion.Placeho
 		if(id.equals("topkillstreak")) {
 			return "" + ps.getTopKillstreak();
 		}
+		if(id.equals("level_progress")) {
+			return Core.getInstance().getLevelProgress(ps.getKills());
+		}
+        if(id.equals("level_progress_percent")) {
+			return Core.getInstance().getLevelProgressPercent(ps.getKills());
+		}
+        if(id.equals("kills_tonextlevel")) {
+        	return ""+Core.getInstance().getKillsToNextLevel(ps.getKills());
+        }
 		}
 		return null;
 		

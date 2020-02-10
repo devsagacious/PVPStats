@@ -1,6 +1,6 @@
 main: com.Sagacious_.KitpvpStats.Core
 name: PVPStats
-version: 2.0.5
+version: 2.1.0
 author: Sagacious_
 softdepend: [PlaceholderAPI, MVdWPlaceholderAPI, Vault]
 commands: 
@@ -13,4 +13,10 @@ commands:
   adminreset:
    aliases: [ar]
   statsreset:
-   aliases: [sr]  
+   aliases: [sr] 
+  setstats:
+   usage: /<command>
+  removestats:
+   usage: /<command>
+  addstats:
+   usage: /<command>

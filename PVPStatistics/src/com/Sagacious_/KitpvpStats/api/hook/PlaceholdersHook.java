@@ -65,6 +65,27 @@ public class PlaceholdersHook {
 					return Core.getInstance().getLevel(data.getKills());
 				}
 			});
+			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(Core.getInstance(), "pvpstats_level_progress", new be.maximvdw.placeholderapi.PlaceholderReplacer() {
+				@Override
+				public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent e) {
+					UserData data = Core.getInstance().dh.getData(e.getPlayer());
+					return Core.getInstance().getLevelProgress(data.getKills());
+				}
+			});
+			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(Core.getInstance(), "pvpstats_level_progress_percent", new be.maximvdw.placeholderapi.PlaceholderReplacer() {
+				@Override
+				public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent e) {
+					UserData data = Core.getInstance().dh.getData(e.getPlayer());
+					return Core.getInstance().getLevelProgressPercent(data.getKills());
+				}
+			});
+			be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(Core.getInstance(), "pvpstats_kills_tonextlevel", new be.maximvdw.placeholderapi.PlaceholderReplacer() {
+				@Override
+				public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent e) {
+					UserData data = Core.getInstance().dh.getData(e.getPlayer());
+					return ""+Core.getInstance().getKillsToNextLevel(data.getKills());
+				}
+			});
 	}
 	}
 	

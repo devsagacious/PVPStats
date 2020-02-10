@@ -4,7 +4,10 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Files;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.util.List;
+import java.util.Locale;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -15,9 +18,12 @@ import com.Sagacious_.KitpvpStats.api.hook.PlaceholderAPIHook;
 import com.Sagacious_.KitpvpStats.api.hook.PlaceholdersHook;
 import com.Sagacious_.KitpvpStats.api.hook.VaultHook;
 import com.Sagacious_.KitpvpStats.api.hook.WorldguardHook;
+import com.Sagacious_.KitpvpStats.command.CommandAddstats;
 import com.Sagacious_.KitpvpStats.command.CommandAdminreset;
 import com.Sagacious_.KitpvpStats.command.CommandLeaderboardrefresh;
 import com.Sagacious_.KitpvpStats.command.CommandMoveleaderboard;
+import com.Sagacious_.KitpvpStats.command.CommandRemovestats;
+import com.Sagacious_.KitpvpStats.command.CommandSetstats;
 import com.Sagacious_.KitpvpStats.command.CommandStats;
 import com.Sagacious_.KitpvpStats.command.CommandStatsreset;
 import com.Sagacious_.KitpvpStats.data.DataHandler;
@@ -42,8 +48,13 @@ public class Core extends JavaPlugin{
 	public PlaceholderAPIHook pa = null;
 	public PlaceholdersHook ph = null;
 	public WorldguardHook wh = null;
-	public String version = "1.2";
+	public String version = "1.3";
 	private Updater update;
+	
+	private String level_progress_identifier = "|";
+	private int level_progress_blocks = 10;
+	private String level_progress_color = "§c";
+	private String level_progress_noncolor = "§7";
 	
 	@Override
 	public void onEnable() {
@@ -70,10 +81,15 @@ public class Core extends JavaPlugin{
 				getLogger().info("###################");
 			}
 		}
+		level_progress_identifier = getConfig().getString("level-progress-identifier");
+		level_progress_blocks = getConfig().getInt("level-progress-blocks");
+		level_progress_color = ChatColor.translateAlternateColorCodes('&', getConfig().getString("level-progress-color"));
+		level_progress_noncolor = ChatColor.translateAlternateColorCodes('&', getConfig().getString("level-progress-noncolor"));
 		wh = new WorldguardHook();
 		dh = new DataHandler();
 	    new ActivityHandler(); new CommandStats(); new CommandMoveleaderboard();
-	    new CommandAdminreset(); new CommandStatsreset();
+	    new CommandAdminreset(); new CommandStatsreset(); new CommandAddstats();
+	    new CommandSetstats(); new CommandRemovestats();
 		lh = new LeaderboardHandler();
 		kh = new KillstreakHandler();
 		new AntistatsHandler();
@@ -106,8 +122,39 @@ public class Core extends JavaPlugin{
 	   return ChatColor.translateAlternateColorCodes('&', ranks.get(ranks.size()-1)).split(":")[0];
 	}
 	public int getLevelInt(int kills) {
-		  return kills/interval;
+		if(kills==0) {return 0;}
+		  return (int)(kills/interval);
 		}
+	
+	public int getKillsToNextLevel(int kills) {
+		return (interval*(getLevelInt(kills))+interval)-kills;
+	}
+	
+	public String getLevelProgress(int kills) {
+		double percent = Double.valueOf(getLevelProgressPercent(kills));
+		String returned = "";
+		for(int i = 0; i < level_progress_blocks; i++) {
+			boolean color = false;
+			if((double)(i+1)/(double)level_progress_blocks*(double)100<=percent) {
+				color = true;
+			}
+			returned=returned+(color?level_progress_color:level_progress_noncolor)+level_progress_identifier;
+		}
+		return returned;
+	}
+	
+	private DecimalFormat df = new DecimalFormat("#.#", new DecimalFormatSymbols(Locale.ENGLISH));
+	public String getLevelProgressPercent(int kills) {
+		if(getKillsToNextLevel(kills)==interval) {return "0.0";}
+		double percent = 0.0;
+		int fs = interval-getKillsToNextLevel(kills);
+		Core.getInstance().getLogger().info(fs + " " + interval + " " + getKillsToNextLevel(kills));
+		if(fs>0) {
+			percent = (double)fs/(double)interval*(double)100;
+		}
+		double f = Double.valueOf(String.valueOf(percent).replace(",", "."));
+		return df.format(f);
+	}
 	
 	private File dataFolder;
 	private File config;
