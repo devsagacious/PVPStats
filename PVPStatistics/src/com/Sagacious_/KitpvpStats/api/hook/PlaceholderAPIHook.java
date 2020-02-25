@@ -1,6 +1,7 @@
 package com.Sagacious_.KitpvpStats.api.hook;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import org.bukkit.entity.Player;
 
@@ -61,6 +62,24 @@ public class PlaceholderAPIHook extends me.clip.placeholderapi.expansion.Placeho
         if(id.equals("kills_tonextlevel")) {
         	return ""+Core.getInstance().getKillsToNextLevel(ps.getKills());
         }
+        if(id.contains("kills_")) {
+			int f = Integer.parseInt(id.split("_")[1])-1;
+			List<UserData> d = Core.getInstance().dh.getKills(Core.getInstance().lh.killTop.get(f));
+			if(d.get(f)==null) {return "None";}
+			return "" + d.get(f).getName();
+		}
+		if(id.contains("deaths_")) {
+			int f = Integer.parseInt(id.split("_")[1])-1;
+			List<UserData> d = Core.getInstance().dh.getDeaths(Core.getInstance().lh.deathTop.get(f));
+			if(d.get(f)==null) {return "None";}
+			return "" + d.get(f).getName();
+		}
+		if(id.contains("killstreak_")) {
+			int f = Integer.parseInt(id.split("_")[1])-1;
+			List<UserData> d = Core.getInstance().dh.getKillstreak(Core.getInstance().lh.killstreakTop.get(f));
+			if(d.get(f)==null) {return "None";}
+			return "" + d.get(f).getName();
+		}
 		}
 		return null;
 		

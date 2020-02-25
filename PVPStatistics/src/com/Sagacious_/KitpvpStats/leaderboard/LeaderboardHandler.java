@@ -1,7 +1,9 @@
 package com.Sagacious_.KitpvpStats.leaderboard;
 
 import java.io.File;
+/*import java.io.FileWriter;*/
 import java.io.IOException;
+/*import java.io.PrintWriter;*/
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -13,12 +15,14 @@ import org.bukkit.Location;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.ArmorStand;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDeathEvent;
 
 import com.Sagacious_.KitpvpStats.Core;
+import com.Sagacious_.KitpvpStats.api.event.LeaderboardUpdateEvent;
 import com.Sagacious_.KitpvpStats.data.UserData;
 
 public class LeaderboardHandler implements Listener{
@@ -50,9 +54,14 @@ public class LeaderboardHandler implements Listener{
 		}
 		
 		public void kill() {
-			as.remove();
+			((Entity)as).remove();
 			if(!as.isDead()) {
 				as.setHealth(0);
+			}
+			for(Entity e : loc.getWorld().getEntities()) {
+				if(e.getEntityId()==as.getEntityId()) {
+					e.remove();
+				}
 			}
 		}
 		
@@ -131,15 +140,25 @@ public class LeaderboardHandler implements Listener{
 	      Collections.sort(temp, Collections.reverseOrder());
     return temp;
 	}
+	
+	
+	public List<Integer> killTop = new ArrayList<Integer>();
+	public List<Integer> deathTop = new ArrayList<Integer>();
+	public List<Integer> killstreakTop = new ArrayList<Integer>();
+	
 	private DecimalFormat df = new DecimalFormat("####0.0##############");
 	public void setupLeaderboard(boolean kills, boolean deaths, boolean killstreak, Location loc) {
 		FileConfiguration conf = Core.getInstance().getConfig();
 		if(kills) {
+			if(!Core.getInstance().useHolographic) {
 			lke_l = new Location(loc.getWorld(), Double.valueOf(df.format(loc.getX()).replaceAll(",", ".")), Double.valueOf(df.format(loc.getY()).replaceAll(",", ".")), Double.valueOf(df.format(loc.getZ()).replaceAll(",", ".")));
 			kill_hologram.add(new Hologram(lke_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-kills-header"))));
 			for(int i = 0; i < 10; i++) {
 				lke_l.setY(lke_l.getY()-0.3D);
 				kill_hologram.add(new Hologram(lke_l, format.replaceAll("%number%", ""+(i+1)).replaceAll("%name%", "None").replaceAll("%integer%", "0")));
+			}
+			lke_l.setY(lke_l.getY()-0.3D);
+			kill_hologram.add(new Hologram(lke_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-kills-footer"))));
 			}
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), new Runnable() {
 				public void run() {
@@ -148,11 +167,16 @@ public class LeaderboardHandler implements Listener{
 			}, 40L, 20L*conf.getInt("leaderboard-update-time"));
 		}
 		else if(deaths) {
+			if(!Core.getInstance().useHolographic) {
 			lde_l = new Location(loc.getWorld(), Double.valueOf(df.format(loc.getX()).replaceAll(",", ".")), Double.valueOf(df.format(loc.getY()).replaceAll(",", ".")), Double.valueOf(df.format(loc.getZ()).replaceAll(",", ".")));
+
 			deaths_hologram.add(new Hologram(lde_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-deaths-header"))));
 			for(int i = 0; i < 10; i++) {
 				lde_l.setY(lde_l.getY()-0.3D);
 				deaths_hologram.add(new Hologram(lde_l, format.replaceAll("%number%", ""+(i+1)).replaceAll("%name%", "None").replaceAll("%integer%", "0")));
+			}
+			lde_l.setY(lde_l.getY()-0.3D);
+			deaths_hologram.add(new Hologram(lde_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-deaths-footer"))));
 			}
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), new Runnable() {
 				public void run() {
@@ -161,11 +185,16 @@ public class LeaderboardHandler implements Listener{
 			}, 60L, 20L*conf.getInt("leaderboard-update-time"));
 		}
 		else if(killstreak) {
-			lde_l = new Location(loc.getWorld(), Double.valueOf(df.format(loc.getX()).replaceAll(",", ".")), Double.valueOf(df.format(loc.getY()).replaceAll(",", ".")), Double.valueOf(df.format(loc.getZ()).replaceAll(",", ".")));
+			if(!Core.getInstance().useHolographic) {
+			lkie_l = new Location(loc.getWorld(), Double.valueOf(df.format(loc.getX()).replaceAll(",", ".")), Double.valueOf(df.format(loc.getY()).replaceAll(",", ".")), Double.valueOf(df.format(loc.getZ()).replaceAll(",", ".")));
+
 			killstreak_hologram.add(new Hologram(lkie_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-killstreak-header"))));
 			for(int i = 0; i < 10; i++) {
 				lkie_l.setY(lkie_l.getY()-0.3D);
 				killstreak_hologram.add(new Hologram(lkie_l, format.replaceAll("%number%", ""+(i+1)).replaceAll("%name%", "None").replaceAll("%integer%", "0")));
+			}
+			lkie_l.setY(lkie_l.getY()-0.3D);
+			killstreak_hologram.add(new Hologram(lkie_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-killstreak-footer"))));
 			}
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), new Runnable() {
 				public void run() {
@@ -181,12 +210,17 @@ public class LeaderboardHandler implements Listener{
 		format = ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-format"));
 		lke = conf.getBoolean("leaderboard-kills-enabled");
 		if(lke) {
+			if(!Core.getInstance().useHolographic) {
 			String[] l = conf.getString("leaderboard-kills-location").split(",");
-			lke_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2]), Double.valueOf(l[3]));
+			lke_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2])+0.3, Double.valueOf(l[3]));
+
 			kill_hologram.add(new Hologram(lke_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-kills-header"))));
 			for(int i = 0; i < 10; i++) {
 				lke_l.setY(lke_l.getY()-0.3D);
 				kill_hologram.add(new Hologram(lke_l, format.replaceAll("%number%", ""+(i+1)).replaceAll("%name%", "None").replaceAll("%integer%", "0")));
+			}
+			lke_l.setY(lke_l.getY()-0.3D);
+			kill_hologram.add(new Hologram(lke_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-kills-footer"))));
 			}
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), new Runnable() {
 				public void run() {
@@ -196,12 +230,17 @@ public class LeaderboardHandler implements Listener{
 		}
 		lde = conf.getBoolean("leaderboard-deaths-enabled");
 		if(lde) {
+			if(!Core.getInstance().useHolographic) {
 			String[] l = conf.getString("leaderboard-deaths-location").split(",");
-			lde_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2]), Double.valueOf(l[3]));
+			lde_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2])+0.3, Double.valueOf(l[3]));
+
 			deaths_hologram.add(new Hologram(lde_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-deaths-header"))));
 			for(int i = 0; i < 10; i++) {
 				lde_l.setY(lde_l.getY()-0.3D);
 				deaths_hologram.add(new Hologram(lde_l, format.replaceAll("%number%", ""+(i+1)).replaceAll("%name%", "None").replaceAll("%integer%", "0")));
+			}
+			lde_l.setY(lde_l.getY()-0.3D);
+			deaths_hologram.add(new Hologram(lde_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-deaths-footer"))));
 			}
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), new Runnable() {
 				public void run() {
@@ -211,12 +250,17 @@ public class LeaderboardHandler implements Listener{
 		}
 		lkie = conf.getBoolean("leaderboard-killstreak-enabled");
 		if(lkie) {
+			if(!Core.getInstance().useHolographic) {
 			String[] l = conf.getString("leaderboard-killstreak-location").split(",");
-			lkie_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2]), Double.valueOf(l[3]));
+			lkie_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2])+0.3, Double.valueOf(l[3]));
+
 			killstreak_hologram.add(new Hologram(lkie_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-killstreak-header"))));
 			for(int i = 0; i < 10; i++) {
 				lkie_l.setY(lkie_l.getY()-0.3D);
 				killstreak_hologram.add(new Hologram(lkie_l, format.replaceAll("%number%", ""+(i+1)).replaceAll("%name%", "None").replaceAll("%integer%", "0")));
+			}
+			lkie_l.setY(lkie_l.getY()-0.3D);
+			killstreak_hologram.add(new Hologram(lkie_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-killstreak-footer"))));
 			}
 			Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), new Runnable() {
 				public void run() {
@@ -249,7 +293,11 @@ public class LeaderboardHandler implements Listener{
 	}
 	
 	public void refreshKills() {
+		
 		List<Integer> s = sortKills();
+		killTop.clear();
+		killTop.addAll(s);
+		if(!Core.getInstance().useHolographic) {
 		List<UserData> temp = new ArrayList<UserData>();
 		for(int i = 0; i < s.size(); i++) {
 			int curr = s.get(i);
@@ -262,7 +310,7 @@ public class LeaderboardHandler implements Listener{
 			}
 			}
 		}
-		for(int i = 1; i < kill_hologram.size(); i++) {
+		for(int i = 1; i < kill_hologram.size()-1; i++) {
 			if(i-1 < temp.size()) {
 			Hologram h = kill_hologram.get(i);
 			h.setText(format.replaceAll("%number%", ""+i).replaceAll("%name%", temp.get(i-1).getName()).replaceAll("%integer%", ""+temp.get(i-1).getKills()));
@@ -270,10 +318,15 @@ public class LeaderboardHandler implements Listener{
 		}
 		s.clear();
 		temp.clear();
+		}
+    	Bukkit.getPluginManager().callEvent(new LeaderboardUpdateEvent(0));
 }
 
 public void refreshDeaths() {
 List<Integer> s = sortDeaths();
+deathTop.clear();
+deathTop.addAll(s);
+if(!Core.getInstance().useHolographic) {
 List<UserData> temp = new ArrayList<UserData>();
 for(int i = 0; i < s.size(); i++) {
 	int curr = s.get(i);
@@ -287,7 +340,7 @@ for(int i = 0; i < s.size(); i++) {
 	}
 	}
 }
-for(int i = 1; i < deaths_hologram.size(); i++) {
+for(int i = 1; i < deaths_hologram.size()-1; i++) {
 	if(i-1 < temp.size()) {
 	Hologram h = deaths_hologram.get(i);
 	h.setText(format.replaceAll("%number%", ""+i).replaceAll("%name%", temp.get(i-1).getName()).replaceAll("%integer%", ""+temp.get(i-1).getDeaths()));
@@ -295,10 +348,15 @@ for(int i = 1; i < deaths_hologram.size(); i++) {
 }
 s.clear();
 temp.clear();
+	}
+Bukkit.getPluginManager().callEvent(new LeaderboardUpdateEvent(1));
 }
 
 public void refreshKillstreak() {
 List<Integer> s = sortKillstreak();
+killstreakTop.clear();
+killstreakTop.addAll(s);
+if(!Core.getInstance().useHolographic) {
 List<UserData> temp = new ArrayList<UserData>();
 for(int i = 0; i < s.size(); i++) {
 	int curr = s.get(i);
@@ -311,7 +369,7 @@ for(int i = 0; i < s.size(); i++) {
 	}
 	}
 }
-for(int i = 1; i < killstreak_hologram.size(); i++) {
+for(int i = 1; i < killstreak_hologram.size()-1; i++) {
 	if(i-1 < temp.size()) {
 	Hologram h = killstreak_hologram.get(i);
 	h.setText(format.replaceAll("%number%", ""+i).replaceAll("%name%", temp.get(i-1).getName()).replaceAll("%integer%", ""+temp.get(i-1).getTopKillstreak()));
@@ -319,6 +377,8 @@ for(int i = 1; i < killstreak_hologram.size(); i++) {
 }
 s.clear();
 temp.clear();
+	}
+Bukkit.getPluginManager().callEvent(new LeaderboardUpdateEvent(2));
 }
 	
 	public void killAll() {

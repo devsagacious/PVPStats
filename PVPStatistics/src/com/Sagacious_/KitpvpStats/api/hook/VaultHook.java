@@ -16,7 +16,7 @@ import com.Sagacious_.KitpvpStats.Core;
 import net.milkbowl.vault.chat.Chat;
 
 public class VaultHook implements Listener{
-private Chat chat;
+private Chat chat = null;
 private boolean use = false;
 private String format;
 
@@ -41,13 +41,18 @@ public VaultHook() {
 @EventHandler
 public void onFormat(AsyncPlayerChatEvent e) {
 	if(use) {
-		String f = format.replace("%level%", Core.getInstance().getLevel(Core.getInstance().dh.getData(e.getPlayer()).getKills())).replace("%prefix%", chat.getPlayerPrefix(e.getPlayer())).replace("%player%", e.getPlayer().getName()).replace("%suffix%", chat.getPlayerSuffix(e.getPlayer())).replace("%message%", e.getMessage());
+		String f = format;
 		if(Core.getInstance().ph!=null) {
-			Core.getInstance().ph.format(e.getPlayer(), format);
+			f=Core.getInstance().ph.format(e.getPlayer(), format);
 		}
 		if(Core.getInstance().pa!=null&&me.clip.placeholderapi.PlaceholderAPI.containsPlaceholders(format)) {
-			me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(e.getPlayer(), format);
+			f=me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(e.getPlayer(), format);
 		}
+		if(chat!=null){f = f.replace("{prefix}", chat.getPlayerPrefix(e.getPlayer())).replace("{suffix}", chat.getPlayerSuffix(e.getPlayer()));}
+		f=f.replace("{level}", Core.getInstance().getLevel(Core.getInstance().dh.getData(e.getPlayer()).getKills()))
+				.replace("{player}", e.getPlayer().getName());
+		f=f.replace("{message}", "%2$s");
+		f=f.replace("%", "%%");
 		e.setFormat(f);
 	}
 }

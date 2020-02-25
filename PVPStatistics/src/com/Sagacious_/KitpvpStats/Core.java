@@ -6,6 +6,7 @@ import java.io.InputStream;
 import java.nio.file.Files;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -14,6 +15,7 @@ import org.bukkit.ChatColor;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import com.Sagacious_.KitpvpStats.Updater.Result;
+import com.Sagacious_.KitpvpStats.api.hook.HolographicHook;
 import com.Sagacious_.KitpvpStats.api.hook.PlaceholderAPIHook;
 import com.Sagacious_.KitpvpStats.api.hook.PlaceholdersHook;
 import com.Sagacious_.KitpvpStats.api.hook.VaultHook;
@@ -32,6 +34,7 @@ import com.Sagacious_.KitpvpStats.handler.ActivityHandler;
 import com.Sagacious_.KitpvpStats.handler.AntistatsHandler;
 import com.Sagacious_.KitpvpStats.handler.KillstreakHandler;
 import com.Sagacious_.KitpvpStats.leaderboard.LeaderboardHandler;
+import com.Sagacious_.KitpvpStats.leaderboard.LeaderboardHandler.Hologram;
 import com.Sagacious_.KitpvpStats.util.FileUtil;
 
 public class Core extends JavaPlugin{
@@ -44,17 +47,19 @@ public class Core extends JavaPlugin{
 	public DataHandler dh;
 	public LeaderboardHandler lh;
 	public KillstreakHandler kh;
+	public boolean useHolographic = false;
 	
 	public PlaceholderAPIHook pa = null;
 	public PlaceholdersHook ph = null;
 	public WorldguardHook wh = null;
-	public String version = "1.3";
+	public String version = "1.5";
 	private Updater update;
 	
 	private String level_progress_identifier = "|";
 	private int level_progress_blocks = 10;
 	private String level_progress_color = "§c";
 	private String level_progress_noncolor = "§7";
+	public HolographicHook h = null;
 	
 	@Override
 	public void onEnable() {
@@ -79,6 +84,12 @@ public class Core extends JavaPlugin{
 				getLogger().info("###################");
 				getLogger().info("Installed newest version of PVPStatistics");
 				getLogger().info("###################");
+			}
+		}
+		if(Bukkit.getPluginManager().isPluginEnabled("HolographicDisplays")) {
+			useHolographic = getConfig().getBoolean("use-holographicdisplays");
+			if(useHolographic) {
+			     h = new HolographicHook();
 			}
 		}
 		level_progress_identifier = getConfig().getString("level-progress-identifier");
@@ -107,8 +118,21 @@ public class Core extends JavaPlugin{
 
 	@Override
 	public void onDisable() {
+		List<String> ids = new ArrayList<String>();
+		for(Hologram h : lh.kill_hologram) {
+			ids.add(""+h.getStand().getEntityId());
+		}
+		for(Hologram h : lh.deaths_hologram) {
+			ids.add(""+h.getStand().getEntityId());
+		}
+		for(Hologram h : lh.killstreak_hologram) {
+			ids.add(""+h.getStand().getEntityId());
+		}
 		for(UserData d : dh.data) {d.save();}
 		lh.save();lh.killAll();
+		if(h!=null) {
+			h.killAll();
+		}
 	}
 	private int interval = getConfig().getInt("level-kills-interval");
 	private List<String> ranks = getConfig().getStringList("levels");
@@ -148,7 +172,6 @@ public class Core extends JavaPlugin{
 		if(getKillsToNextLevel(kills)==interval) {return "0.0";}
 		double percent = 0.0;
 		int fs = interval-getKillsToNextLevel(kills);
-		Core.getInstance().getLogger().info(fs + " " + interval + " " + getKillsToNextLevel(kills));
 		if(fs>0) {
 			percent = (double)fs/(double)interval*(double)100;
 		}

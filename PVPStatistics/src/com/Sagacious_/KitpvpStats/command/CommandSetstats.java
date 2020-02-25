@@ -19,6 +19,7 @@ public class CommandSetstats implements CommandExecutor{
 			return false;
 		}
 			if(arg3.length < 3) {
+				sender.sendMessage("§a/setstats all <player> <amount>");
 				sender.sendMessage("§a/setstats kills <player> <amount>");
 				sender.sendMessage("§a/setstats deaths <player> <amount>");
 				sender.sendMessage("§a/setstats killstreak <player> <amount>");
@@ -34,6 +35,7 @@ public class CommandSetstats implements CommandExecutor{
 				try {
 					amount = Integer.valueOf(arg3[2]);
 				}catch(NumberFormatException e) {sender.sendMessage("§cPlease specify a correct number!"); return true;}
+				if(arg3[0].equalsIgnoreCase("all")) {d.setKills(amount);d.setDeaths(amount);d.setKillstreak(amount);d.setTopKillstreak(amount);}
 				if(arg3[0].equalsIgnoreCase("kills")) {d.setKills(amount);}
 				if(arg3[0].equalsIgnoreCase("deaths")) {d.setDeaths(amount);}
 				if(arg3[0].equalsIgnoreCase("killstreak")) {d.setKillstreak(amount);}

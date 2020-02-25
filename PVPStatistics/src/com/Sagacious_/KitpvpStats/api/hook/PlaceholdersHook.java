@@ -1,6 +1,7 @@
 package com.Sagacious_.KitpvpStats.api.hook;
 
 import java.text.DecimalFormat;
+import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -86,6 +87,39 @@ public class PlaceholdersHook {
 					return ""+Core.getInstance().getKillsToNextLevel(data.getKills());
 				}
 			});
+			for(int i = 1; i < 11; i++) {
+				be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(Core.getInstance(), "pvpstats_kills_" + i, new be.maximvdw.placeholderapi.PlaceholderReplacer() {
+					@Override
+					public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent e) {
+						int f = Integer.parseInt(e.getPlaceholder().split("_")[2])-1;
+						List<UserData> d = Core.getInstance().dh.getKills(Core.getInstance().lh.killTop.get(f));
+						if(d.get(f)==null) {return "None";}
+						return "" + d.get(f).getName();
+					}
+				});
+			}
+			for(int i = 1; i < 11; i++) {
+				be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(Core.getInstance(), "pvpstats_deaths_" + i, new be.maximvdw.placeholderapi.PlaceholderReplacer() {
+					@Override
+					public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent e) {
+						int f = Integer.parseInt(e.getPlaceholder().split("_")[2])-1;
+						List<UserData> d = Core.getInstance().dh.getDeaths(Core.getInstance().lh.deathTop.get(f));
+						if(d.get(f)==null) {return "None";}
+						return "" + d.get(f).getName();
+					}
+				});
+			}
+			for(int i = 1; i < 11; i++) {
+				be.maximvdw.placeholderapi.PlaceholderAPI.registerPlaceholder(Core.getInstance(), "pvpstats_killstreak_" + i, new be.maximvdw.placeholderapi.PlaceholderReplacer() {
+					@Override
+					public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent e) {
+						int f = Integer.parseInt(e.getPlaceholder().split("_")[2])-1;
+						List<UserData> d = Core.getInstance().dh.getKillstreak(Core.getInstance().lh.killstreakTop.get(f));
+						if(d.get(f)==null) {return "None";}
+						return "" + d.get(f).getName();
+					}
+				});
+			}
 	}
 	}
 	

@@ -33,34 +33,49 @@ public class CommandMoveleaderboard implements CommandExecutor{
 				p.sendMessage("§c§lPVPStats §8| §rInvalid command syntax, use /moveleaderboard <kills/deaths/killstreak>");
 				return true;
 			}
-			List<Hologram> toMove = null;
+			String toMove = null;
 			boolean f = false;
 			boolean k=false;
 			boolean d=false;
 			boolean ki=false;
 			if(args[0].equalsIgnoreCase("kills")) {
-				toMove = Core.getInstance().lh.kill_hologram;f=true;k=true;
+				toMove = args[0];f=true;k=true;
 			}else if(args[0].equalsIgnoreCase("deaths")) {
-				toMove = Core.getInstance().lh.deaths_hologram;f=true;d=true;
+				toMove = args[0];f=true;d=true;
 			}else if(args[0].equalsIgnoreCase("killstreak")) {
-				toMove = Core.getInstance().lh.killstreak_hologram;f=true;ki=true;
+				toMove = args[0];f=true;ki=true;
 			}
+			if(!Core.getInstance().useHolographic) {
 			if(toMove == null || !f) {
 				p.sendMessage("§c§lPVPStats §8| §rInvalid command syntax, use /moveleaderboard <kills/deaths/killstreak>");
 				return true;
 			}else {
+				List<Hologram> moving = toMove.equalsIgnoreCase("kills")?Core.getInstance().lh.kill_hologram:toMove.equalsIgnoreCase("kills")?Core.getInstance().lh.deaths_hologram:Core.getInstance().lh.killstreak_hologram;
 				if(f&&toMove.isEmpty()) {
 					Core.getInstance().lh.setupLeaderboard(k, d, ki, p.getLocation());
 				}else {
 				Location tp = new Location(p.getWorld(), Double.valueOf(df.format(p.getLocation().getX()).replaceAll(",", ".")), Double.valueOf(df.format(p.getLocation().getY()).replaceAll(",", ".")), Double.valueOf(df.format(p.getLocation().getZ()).replaceAll(",", ".")));
-				toMove.get(0).teleport(tp);
-				for(int i = 1; i < toMove.size(); i++) {
+				moving.get(0).teleport(tp);
+				for(int i = 1; i < moving.size(); i++) {
 					tp.setY(tp.getY()-0.3D);
-					toMove.get(i).teleport(tp);
+					moving.get(i).teleport(tp);
 				}
 				p.sendMessage("§c§lPVPStats §8| §rMoved leaderboard to your location!");
 				return true;
 			}
+			}
+			}else {
+				if(toMove.equalsIgnoreCase("kills")) {
+					Core.getInstance().h.killHologram.teleport(p.getLocation());
+				}
+				if(toMove.equalsIgnoreCase("deaths")) {
+					Core.getInstance().h.deathsHologram.teleport(p.getLocation());
+				}
+				if(toMove.equalsIgnoreCase("killstreak")) {
+					Core.getInstance().h.killstreakHologram.teleport(p.getLocation());
+				}
+				p.sendMessage("§c§lPVPStats §8| §rMoved leaderboard to your location!");
+				return true;
 			}
 		}
 		return false;
