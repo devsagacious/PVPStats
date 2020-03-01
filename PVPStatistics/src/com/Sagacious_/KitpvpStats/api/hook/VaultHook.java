@@ -48,10 +48,11 @@ public void onFormat(AsyncPlayerChatEvent e) {
 		if(Core.getInstance().pa!=null&&me.clip.placeholderapi.PlaceholderAPI.containsPlaceholders(format)) {
 			f=me.clip.placeholderapi.PlaceholderAPI.setPlaceholders(e.getPlayer(), format);
 		}
-		if(chat!=null){f = f.replace("{prefix}", chat.getPlayerPrefix(e.getPlayer())).replace("{suffix}", chat.getPlayerSuffix(e.getPlayer()));}
-		f=f.replace("{level}", Core.getInstance().getLevel(Core.getInstance().dh.getData(e.getPlayer()).getKills()))
-				.replace("{player}", e.getPlayer().getName());
-		f=f.replace("{message}", "%2$s");
+		if(chat!=null){f = f.replace("{prefix}", ChatColor.translateAlternateColorCodes('&', chat.getPlayerPrefix(e.getPlayer()))).replace("{suffix}", ChatColor.translateAlternateColorCodes('&', chat.getPlayerSuffix(e.getPlayer())));}
+		f=f.replace("{pvplevel}", Core.getInstance().getLevel(Core.getInstance().dh.getData(e.getPlayer()).getKills()))
+				.replace("{player}", e.getPlayer().getName())
+				.replace("{displayname}", e.getPlayer().getDisplayName());
+		f=f.replace("{message}", e.getMessage());
 		f=f.replace("%", "%%");
 		e.setFormat(f);
 	}

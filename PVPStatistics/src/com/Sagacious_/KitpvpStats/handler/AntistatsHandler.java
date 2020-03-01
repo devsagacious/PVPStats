@@ -101,6 +101,7 @@ public class AntistatsHandler implements Listener{
 	       }
 		}
 			UserData u = Core.getInstance().dh.getData(e.getEntity());
+			Core.getInstance().kh.endkillstreak(e.getEntity().getKiller(), e.getEntity(), u.getKillstreak());
  		   if(u!=null) {
  			u.setKillstreak(0);u.setDeaths(u.getDeaths()+1);
  		   }

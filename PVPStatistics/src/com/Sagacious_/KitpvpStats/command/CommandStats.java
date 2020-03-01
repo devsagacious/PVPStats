@@ -36,6 +36,15 @@ public class CommandStats implements CommandExecutor{
 			UserData data = null;
 			String pl = Core.getInstance().getConfig().getString("me");
 			if(arg3.length > 0) {
+				if(arg3[0].equalsIgnoreCase("reload")) {
+					if(sender.hasPermission("pvpstats.reload")) {
+						sender.sendMessage("§aReloading plugin...");
+						Core.getInstance().onDisable();
+						Core.getInstance().onEnable();
+						sender.sendMessage("§aReloaded plugin!");
+						return true;
+					}
+				}
 				Player p = Bukkit.getPlayerExact(arg3[0]);
 				if(p == null) {
 					sender.sendMessage("§cUnknown player §4" + arg3[0]);
