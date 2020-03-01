@@ -33,6 +33,7 @@ public class CommandMoveleaderboard implements CommandExecutor{
 				p.sendMessage("§c§lPVPStats §8| §rInvalid command syntax, use /moveleaderboard <kills/deaths/killstreak>");
 				return true;
 			}
+			if(!Core.getInstance().useHolographic) {
 			String toMove = null;
 			boolean f = false;
 			boolean k=false;
@@ -77,7 +78,24 @@ public class CommandMoveleaderboard implements CommandExecutor{
 				p.sendMessage("§c§lPVPStats §8| §rMoved leaderboard to your location!");
 				return true;
 			}
-		}
+			}
+			com.gmail.filoghost.holographicdisplays.api.Hologram s = null;
+			if(args[0].equalsIgnoreCase("kills")) {
+				s = Core.getInstance().h.killHologram;
+			}else if(args[0].equalsIgnoreCase("deaths")) {
+				s = Core.getInstance().h.deathsHologram;
+			}else if(args[0].equalsIgnoreCase("killstreak")) {
+				s = Core.getInstance().h.killstreakHologram;
+			}
+			if(s==null) {
+				p.sendMessage("§c§lPVPStats §8| §rInvalid command syntax, use /moveleaderboard <kills/deaths/killstreak/kdr/chr/hmr>");
+				return true;
+			}
+			s.teleport(p.getLocation());
+			p.sendMessage("§c§lPVPStats §8| §rMoved leaderboard to your location!");
+			return true;
+			}
+		
 		return false;
 	}
 

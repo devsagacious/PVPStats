@@ -98,8 +98,6 @@ public class AntistatsHandler implements Listener{
 	    		   last_kill.put(p, e.getEntity().getUniqueId());
 	    		   kills.put(p.getUniqueId(), 1);
 	    	   }
-	       }
-		}
 			UserData u = Core.getInstance().dh.getData(e.getEntity());
 			Core.getInstance().kh.endkillstreak(e.getEntity().getKiller(), e.getEntity(), u.getKillstreak());
  		   if(u!=null) {
@@ -122,6 +120,8 @@ public class AntistatsHandler implements Listener{
  					}
  				}
  				Core.getInstance().kh.reward(e.getEntity().getKiller(), u2.getKillstreak());
+ 			}
+ 			}
  			}
  			}
 		}
