@@ -1,6 +1,6 @@
 main: com.Sagacious_.KitpvpStats.Core
 name: PVPStats
-version: 2.1.9
+version: 2.2.1
 author: Sagacious_
 softdepend: [PlaceholderAPI, MVdWPlaceholderAPI, Vault, HolographicDisplays]
 commands: 

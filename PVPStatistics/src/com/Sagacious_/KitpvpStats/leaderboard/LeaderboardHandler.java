@@ -142,9 +142,9 @@ public class LeaderboardHandler implements Listener{
 	}
 	
 	
-	public List<Integer> killTop = new ArrayList<Integer>();
-	public List<Integer> deathTop = new ArrayList<Integer>();
-	public List<Integer> killstreakTop = new ArrayList<Integer>();
+	public List<UserData> killTop = new ArrayList<UserData>();
+	public List<UserData> deathTop = new ArrayList<UserData>();
+	public List<UserData> killstreakTop = new ArrayList<UserData>();
 	
 	private DecimalFormat df = new DecimalFormat("####0.0##############");
 	public void setupLeaderboard(boolean kills, boolean deaths, boolean killstreak, Location loc) {
@@ -295,9 +295,6 @@ public class LeaderboardHandler implements Listener{
 	public void refreshKills() {
 		
 		List<Integer> s = sortKills();
-		killTop.clear();
-		killTop.addAll(s);
-		if(!Core.getInstance().useHolographic) {
 		List<UserData> temp = new ArrayList<UserData>();
 		for(int i = 0; i < s.size(); i++) {
 			int curr = s.get(i);
@@ -310,23 +307,20 @@ public class LeaderboardHandler implements Listener{
 			}
 			}
 		}
+		if(!Core.getInstance().useHolographic) {
 		for(int i = 1; i < kill_hologram.size()-1; i++) {
 			if(i-1 < temp.size()) {
 			Hologram h = kill_hologram.get(i);
 			h.setText(format.replaceAll("%number%", ""+i).replaceAll("%name%", temp.get(i-1).getName()).replaceAll("%integer%", ""+temp.get(i-1).getKills()));
 			}
 		}
-		s.clear();
-		temp.clear();
 		}
+		killTop = temp;
     	Bukkit.getPluginManager().callEvent(new LeaderboardUpdateEvent(0));
 }
 
 public void refreshDeaths() {
 List<Integer> s = sortDeaths();
-deathTop.clear();
-deathTop.addAll(s);
-if(!Core.getInstance().useHolographic) {
 List<UserData> temp = new ArrayList<UserData>();
 for(int i = 0; i < s.size(); i++) {
 	int curr = s.get(i);
@@ -340,23 +334,20 @@ for(int i = 0; i < s.size(); i++) {
 	}
 	}
 }
+if(!Core.getInstance().useHolographic) {
 for(int i = 1; i < deaths_hologram.size()-1; i++) {
 	if(i-1 < temp.size()) {
 	Hologram h = deaths_hologram.get(i);
 	h.setText(format.replaceAll("%number%", ""+i).replaceAll("%name%", temp.get(i-1).getName()).replaceAll("%integer%", ""+temp.get(i-1).getDeaths()));
 	}
 }
-s.clear();
-temp.clear();
-	}
+}
+deathTop = temp;
 Bukkit.getPluginManager().callEvent(new LeaderboardUpdateEvent(1));
 }
 
 public void refreshKillstreak() {
 List<Integer> s = sortKillstreak();
-killstreakTop.clear();
-killstreakTop.addAll(s);
-if(!Core.getInstance().useHolographic) {
 List<UserData> temp = new ArrayList<UserData>();
 for(int i = 0; i < s.size(); i++) {
 	int curr = s.get(i);
@@ -369,15 +360,15 @@ for(int i = 0; i < s.size(); i++) {
 	}
 	}
 }
+if(!Core.getInstance().useHolographic) {
 for(int i = 1; i < killstreak_hologram.size()-1; i++) {
 	if(i-1 < temp.size()) {
 	Hologram h = killstreak_hologram.get(i);
 	h.setText(format.replaceAll("%number%", ""+i).replaceAll("%name%", temp.get(i-1).getName()).replaceAll("%integer%", ""+temp.get(i-1).getTopKillstreak()));
 	}
 }
-s.clear();
-temp.clear();
-	}
+}
+killstreakTop = temp;
 Bukkit.getPluginManager().callEvent(new LeaderboardUpdateEvent(2));
 }
 	

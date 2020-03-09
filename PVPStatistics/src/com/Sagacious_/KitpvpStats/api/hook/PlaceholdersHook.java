@@ -1,7 +1,6 @@
 package com.Sagacious_.KitpvpStats.api.hook;
 
 import java.text.DecimalFormat;
-import java.util.List;
 
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -92,9 +91,9 @@ public class PlaceholdersHook {
 					@Override
 					public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent e) {
 						int f = Integer.parseInt(e.getPlaceholder().split("_")[2])-1;
-						List<UserData> d = Core.getInstance().dh.getKills(Core.getInstance().lh.killTop.get(f));
-						if(d.get(f)==null) {return "None";}
-						return "" + d.get(f).getName();
+			        	if(Core.getInstance().lh.killTop.size()<=f) {return "None";}
+						UserData d = Core.getInstance().lh.killTop.get(f);
+						return "" + d.getName();
 					}
 				});
 			}
@@ -103,9 +102,9 @@ public class PlaceholdersHook {
 					@Override
 					public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent e) {
 						int f = Integer.parseInt(e.getPlaceholder().split("_")[2])-1;
-						List<UserData> d = Core.getInstance().dh.getDeaths(Core.getInstance().lh.deathTop.get(f));
-						if(d.get(f)==null) {return "None";}
-						return "" + d.get(f).getName();
+			        	if(Core.getInstance().lh.deathTop.size()<=f) {return "None";}
+						UserData d = Core.getInstance().lh.deathTop.get(f);
+						return "" + d.getName();
 					}
 				});
 			}
@@ -114,9 +113,9 @@ public class PlaceholdersHook {
 					@Override
 					public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent e) {
 						int f = Integer.parseInt(e.getPlaceholder().split("_")[2])-1;
-						List<UserData> d = Core.getInstance().dh.getKillstreak(Core.getInstance().lh.killstreakTop.get(f));
-						if(d.get(f)==null) {return "None";}
-						return "" + d.get(f).getName();
+			        	if(Core.getInstance().lh.killstreakTop.size()<=f) {return "None";}
+						UserData d = Core.getInstance().lh.killstreakTop.get(f);
+						return "" + d.getName();
 					}
 				});
 			}

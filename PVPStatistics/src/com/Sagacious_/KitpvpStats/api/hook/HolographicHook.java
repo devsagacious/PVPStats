@@ -77,66 +77,33 @@ public class HolographicHook implements Listener{
 		List<UserData> temp = new ArrayList<UserData>();
 		if(e.getLeaderboard()==0) {
 			if(killHologram!=null) {
-			for(int i = 0; i < Core.getInstance().lh.killTop.size(); i++) {
-				int curr = Core.getInstance().lh.killTop.get(i);
-				if(temp.size() < 10) {
-				List<UserData> temp2 = Core.getInstance().dh.getKills(curr);
-				for(UserData t : temp2) {
-					if(!temp.contains(t)) {
-					temp.add(t);
-					}
-				}
-				}
-			}
+				temp = Core.getInstance().lh.killTop;
 			for(int i = 1; i < 11; i++) {
 				if(i-1 < temp.size()) {
 				killHologram.getLine(i).removeLine();
 				killHologram.insertTextLine(i, format.replaceAll("%number%", ""+i).replaceAll("%name%", temp.get(i-1).getName()).replaceAll("%integer%", ""+temp.get(i-1).getKills()));
 				}
 			}
-			temp.clear();
 			}
 		}else if(e.getLeaderboard()==1) {
 			if(deathsHologram!=null) {
-			for(int i = 0; i < Core.getInstance().lh.deathTop.size(); i++) {
-				int curr = Core.getInstance().lh.deathTop.get(i);
-				if(temp.size() < 10) {
-				List<UserData> temp2 = Core.getInstance().dh.getDeaths(curr);
-				for(UserData t : temp2) {
-					if(!temp.contains(t)) {
-					temp.add(t);
-					}
-				}
-				}
-			}
+				temp = Core.getInstance().lh.deathTop;
 			for(int i = 1; i < 11; i++) {
 				if(i-1 < temp.size()) {
 				deathsHologram.getLine(i).removeLine();
 				deathsHologram.insertTextLine(i, format.replaceAll("%number%", ""+i).replaceAll("%name%", temp.get(i-1).getName()).replaceAll("%integer%", ""+temp.get(i-1).getDeaths()));
 				}
 			}
-			temp.clear();
 			}
 		}else if(e.getLeaderboard()==2) {
 			if(killstreakHologram!=null) {
-			for(int i = 0; i < Core.getInstance().lh.killstreakTop.size(); i++) {
-				int curr = Core.getInstance().lh.killstreakTop.get(i);
-				if(temp.size() < 10) {
-				List<UserData> temp2 = Core.getInstance().dh.getKillstreak(curr);
-				for(UserData t : temp2) {
-					if(!temp.contains(t)) {
-					temp.add(t);
-					}
-				}
-				}
-			}
+				temp = Core.getInstance().lh.killstreakTop;
 			for(int i = 1; i < 11; i++) {
 				if(i-1 < temp.size()) {
 				killstreakHologram.getLine(i).removeLine();
 				killstreakHologram.insertTextLine(i, format.replaceAll("%number%", ""+i).replaceAll("%name%", temp.get(i-1).getName()).replaceAll("%integer%", ""+temp.get(i-1).getKillstreak()));
 				}
 			}
-			temp.clear();
 			}
 		}
 	}

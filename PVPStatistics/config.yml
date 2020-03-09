@@ -41,12 +41,12 @@ level-progress-noncolor: '&7'
 level-kills-interval: 25
 
 #Each string represents a higher level
-#You can reward a player by using : and then putting in your command, multiple commands? just keep using :
+#You can reward a player by using : and then putting in your command, multiple commands? just keep using "::"
 levels:
   - '&6Rookie' #Lvl 1.
   - '&aKiller' #Lvl 2.
   - '&cMurderer' #Lvl 3.
-  - '&6Command Example:eco give %player% 100:msg %player% You have reached level 4!'
+  - '&6Command Example::eco give %player% 100::msg %player% You have reached level 4!'
 
 ## Chat Formatting ##
 ### - REQUIRES Vault

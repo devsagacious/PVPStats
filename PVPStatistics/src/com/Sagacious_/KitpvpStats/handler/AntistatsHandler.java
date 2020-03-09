@@ -111,11 +111,18 @@ public class AntistatsHandler implements Listener{
  				u2.setKills(u2.getKills()+1);
  				String l2 = Core.getInstance().getLevel(u2.getKills());
  				if(!l.equals(l2)) {
+ 					Core.getInstance().getLogger().info("v1");
  					String s = Core.getInstance().getConfig().getStringList("levels").get(Core.getInstance().getLevelInt(u2.getKills()));
- 					if(s.contains(":")) {
- 						String[] f = s.split(":");
+ 					if(s.contains("::")) {
+ 						String[] f = s.split("::");
  						for(int i = 1; i < f.length; i++) {
+ 							if(f[i].startsWith("chat:")) {
+ 								f[i] = f[i].substring(5);
+ 								e.getEntity().getKiller().sendMessage(ChatColor.translateAlternateColorCodes('&', f[i].replace("%player%", e.getEntity().getKiller().getName())));
+ 								
+ 							}else {
  							Bukkit.dispatchCommand(Bukkit.getConsoleSender(), ChatColor.translateAlternateColorCodes('&', f[i].replace("%player%", e.getEntity().getKiller().getName())));
+ 						}
  						}
  					}
  				}
