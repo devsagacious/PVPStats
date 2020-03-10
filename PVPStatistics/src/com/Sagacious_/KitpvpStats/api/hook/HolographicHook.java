@@ -39,6 +39,7 @@ public class HolographicHook implements Listener{
 		format = ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-format"));
         if(lke) {
         	String[] l = conf.getString("leaderboard-kills-location").split(",");
+        	if(Bukkit.getWorld(l[0])==null) {Core.getInstance().getLogger().info("World does not exist, leaderboards will not work (change in config.yml)");return;}
 			lke_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2])+0.3, Double.valueOf(l[3]));
 			Hologram h = HologramsAPI.createHologram(Core.getInstance(), lke_l);
 			h.appendTextLine(ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-kills-header")));
@@ -50,6 +51,7 @@ public class HolographicHook implements Listener{
         }
         if(lde) {
         	String[] l = conf.getString("leaderboard-deaths-location").split(",");
+        	if(Bukkit.getWorld(l[0])==null) {Core.getInstance().getLogger().info("World does not exist, leaderboards will not work (change in config.yml)");return;}
 			lde_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2])+0.3, Double.valueOf(l[3]));
 			Hologram h = HologramsAPI.createHologram(Core.getInstance(), lde_l);
 			h.appendTextLine(ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-deaths-header")));
@@ -61,6 +63,7 @@ public class HolographicHook implements Listener{
         }
         if(lkie) {
         	String[] l = conf.getString("leaderboard-killstreak-location").split(",");
+        	if(Bukkit.getWorld(l[0])==null) {Core.getInstance().getLogger().info("World does not exist, leaderboards will not work (change in config.yml)");return;}
 			lkie_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2])+0.3, Double.valueOf(l[3]));
 			Hologram h = HologramsAPI.createHologram(Core.getInstance(), lkie_l);
 			h.appendTextLine(ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-killstreak-header")));

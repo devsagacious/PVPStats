@@ -93,7 +93,7 @@ public class PlaceholdersHook {
 						int f = Integer.parseInt(e.getPlaceholder().split("_")[2])-1;
 			        	if(Core.getInstance().lh.killTop.size()<=f) {return "None";}
 						UserData d = Core.getInstance().lh.killTop.get(f);
-						return "" + d.getName();
+						return "" + (e.getPlaceholder().endsWith("_amount")?d.getKills():d.getName());
 					}
 				});
 			}
@@ -104,7 +104,7 @@ public class PlaceholdersHook {
 						int f = Integer.parseInt(e.getPlaceholder().split("_")[2])-1;
 			        	if(Core.getInstance().lh.deathTop.size()<=f) {return "None";}
 						UserData d = Core.getInstance().lh.deathTop.get(f);
-						return "" + d.getName();
+						return "" + (e.getPlaceholder().endsWith("_amount")?d.getDeaths():d.getName());
 					}
 				});
 			}
@@ -115,7 +115,7 @@ public class PlaceholdersHook {
 						int f = Integer.parseInt(e.getPlaceholder().split("_")[2])-1;
 			        	if(Core.getInstance().lh.killstreakTop.size()<=f) {return "None";}
 						UserData d = Core.getInstance().lh.killstreakTop.get(f);
-						return "" + d.getName();
+						return "" + (e.getPlaceholder().endsWith("_amount")?d.getKillstreak():d.getName());
 					}
 				});
 			}

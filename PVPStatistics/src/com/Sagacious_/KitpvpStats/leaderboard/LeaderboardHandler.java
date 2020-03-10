@@ -149,6 +149,7 @@ public class LeaderboardHandler implements Listener{
 	private DecimalFormat df = new DecimalFormat("####0.0##############");
 	public void setupLeaderboard(boolean kills, boolean deaths, boolean killstreak, Location loc) {
 		FileConfiguration conf = Core.getInstance().getConfig();
+		if(loc==null||loc.getWorld()==null) {Core.getInstance().getLogger().info("World does not exist, leaderboards will not work (change in config.yml)");return;}
 		if(kills) {
 			if(!Core.getInstance().useHolographic) {
 			lke_l = new Location(loc.getWorld(), Double.valueOf(df.format(loc.getX()).replaceAll(",", ".")), Double.valueOf(df.format(loc.getY()).replaceAll(",", ".")), Double.valueOf(df.format(loc.getZ()).replaceAll(",", ".")));
@@ -212,6 +213,7 @@ public class LeaderboardHandler implements Listener{
 		if(lke) {
 			if(!Core.getInstance().useHolographic) {
 			String[] l = conf.getString("leaderboard-kills-location").split(",");
+			if(Bukkit.getWorld(l[0])==null) {Core.getInstance().getLogger().info("World does not exist, leaderboards will not work (change in config.yml)");return;}
 			lke_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2])+0.3, Double.valueOf(l[3]));
 
 			kill_hologram.add(new Hologram(lke_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-kills-header"))));
@@ -232,6 +234,7 @@ public class LeaderboardHandler implements Listener{
 		if(lde) {
 			if(!Core.getInstance().useHolographic) {
 			String[] l = conf.getString("leaderboard-deaths-location").split(",");
+			if(Bukkit.getWorld(l[0])==null) {Core.getInstance().getLogger().info("World does not exist, leaderboards will not work (change in config.yml)");return;}
 			lde_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2])+0.3, Double.valueOf(l[3]));
 
 			deaths_hologram.add(new Hologram(lde_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-deaths-header"))));
@@ -252,6 +255,7 @@ public class LeaderboardHandler implements Listener{
 		if(lkie) {
 			if(!Core.getInstance().useHolographic) {
 			String[] l = conf.getString("leaderboard-killstreak-location").split(",");
+			if(Bukkit.getWorld(l[0])==null) {Core.getInstance().getLogger().info("World does not exist, leaderboards will not work (change in config.yml)");return;}
 			lkie_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2])+0.3, Double.valueOf(l[3]));
 
 			killstreak_hologram.add(new Hologram(lkie_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-killstreak-header"))));

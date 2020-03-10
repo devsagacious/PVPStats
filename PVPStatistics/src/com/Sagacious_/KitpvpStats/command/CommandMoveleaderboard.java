@@ -47,7 +47,7 @@ public class CommandMoveleaderboard implements CommandExecutor{
 				toMove = args[0];f=true;ki=true;
 			}
 			if(!Core.getInstance().useHolographic) {
-			if(toMove == null || !f) {
+			if(toMove == null || !f || toMove.isEmpty()) {
 				p.sendMessage("§c§lPVPStats §8| §rInvalid command syntax, use /moveleaderboard <kills/deaths/killstreak>");
 				return true;
 			}else {

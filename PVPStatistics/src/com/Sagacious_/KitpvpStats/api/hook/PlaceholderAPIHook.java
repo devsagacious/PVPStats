@@ -65,19 +65,19 @@ public class PlaceholderAPIHook extends me.clip.placeholderapi.expansion.Placeho
         	int f = Integer.parseInt(id.split("_")[1])-1;
         	if(Core.getInstance().lh.killTop.size()<=f) {return "None";}
 			UserData d = Core.getInstance().lh.killTop.get(f);
-			return "" + d.getName();
+			return "" + (id.endsWith("_amount")?d.getKills():d.getName());
 		}
 		if(id.contains("deaths_")) {
 			int f = Integer.parseInt(id.split("_")[1])-1;
 			if(Core.getInstance().lh.killTop.size()<=f){return "None";}
 			UserData d = Core.getInstance().lh.deathTop.get(f);
-			return "" + d.getName();
+			return "" + (id.endsWith("_amount")?d.getDeaths():d.getName());
 		}
 		if(id.contains("killstreak_")) {
 			int f = Integer.parseInt(id.split("_")[1])-1;
 			if(Core.getInstance().lh.killTop.size()<=f){return "None";}
 			UserData d = Core.getInstance().lh.killstreakTop.get(f);
-			return "" + d.getName();
+			return "" + (id.endsWith("_amount")?d.getKillstreak():d.getName());
 		}
 		}
 		return null;
