@@ -8,11 +8,11 @@ import com.Sagacious_.KitpvpStats.Core;
 import com.Sagacious_.KitpvpStats.data.UserData;
 
 public class PlaceholderAPIHook extends me.clip.placeholderapi.expansion.PlaceholderExpansion{
-	private DecimalFormat df = new DecimalFormat("##0.0");
+	private DecimalFormat df = new DecimalFormat(Core.getInstance().getConfig().getString("kdr-format"));
 	private String getKDR(UserData p) {
-		if(p.getKills()==0&&p.getDeaths()==0) {return "0.0";}
-		if(p.getKills()>p.getDeaths()&&p.getDeaths()==0) {return p.getKills()+".0";}
-		if(p.getKills()==p.getDeaths()&&p.getKills()==0) {return "0.0";}
+		if(p.getKills()==0&&p.getDeaths()==0) {return df.format(0);}
+		if(p.getKills()>p.getDeaths()&&p.getDeaths()==0) {return df.format(p.getKills());}
+		if(p.getKills()==p.getDeaths()&&p.getKills()==0) {return df.format(0);}
 		return df.format(Double.valueOf((double)p.getKills()/(double)p.getDeaths()));
 	}
 	@Override
@@ -69,13 +69,13 @@ public class PlaceholderAPIHook extends me.clip.placeholderapi.expansion.Placeho
 		}
 		if(id.contains("deaths_")) {
 			int f = Integer.parseInt(id.split("_")[1])-1;
-			if(Core.getInstance().lh.killTop.size()<=f){return "None";}
+			if(Core.getInstance().lh.deathTop.size()<=f){return "None";}
 			UserData d = Core.getInstance().lh.deathTop.get(f);
 			return "" + (id.endsWith("_amount")?d.getDeaths():d.getName());
 		}
 		if(id.contains("killstreak_")) {
 			int f = Integer.parseInt(id.split("_")[1])-1;
-			if(Core.getInstance().lh.killTop.size()<=f){return "None";}
+			if(Core.getInstance().lh.killstreakTop.size()<=f){return "None";}
 			UserData d = Core.getInstance().lh.killstreakTop.get(f);
 			return "" + (id.endsWith("_amount")?d.getKillstreak():d.getName());
 		}

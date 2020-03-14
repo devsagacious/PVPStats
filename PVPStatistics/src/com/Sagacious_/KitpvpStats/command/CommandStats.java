@@ -16,11 +16,11 @@ import com.Sagacious_.KitpvpStats.Core;
 import com.Sagacious_.KitpvpStats.data.UserData;
 
 public class CommandStats implements CommandExecutor{
-	private DecimalFormat df = new DecimalFormat("##0.0");
+	private DecimalFormat df = new DecimalFormat(Core.getInstance().getConfig().getString("kdr-format"));
 	private String getKDR(UserData p) {
-		if(p.getKills()==0&&p.getDeaths()==0) {return "0.0";}
-		if(p.getKills()>p.getDeaths()&&p.getDeaths()==0) {return p.getKills()+".0";}
-		if(p.getKills()==p.getDeaths()&&p.getKills()==0) {return "0.0";}
+		if(p.getKills()==0&&p.getDeaths()==0) {return df.format(0);}
+		if(p.getKills()>p.getDeaths()&&p.getDeaths()==0) {return df.format(p.getKills());}
+		if(p.getKills()==p.getDeaths()&&p.getKills()==0) {return df.format(0);}
 		return df.format(Double.valueOf((double)p.getKills()/(double)p.getDeaths()));
 	}
 	private List<String> stat;

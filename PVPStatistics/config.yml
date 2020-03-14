@@ -1,4 +1,8 @@
-version: '1.5'
+version: '1.6'
+
+# KDR Format, if you don't know what this means, dont change it.
+# https://docs.oracle.com/javase/7/docs/api/java/text/DecimalFormat.html
+kdr-format: '##0.0'
 
 #Holograms glitch for some people so you can use Holographic Displays instead
 use-holographicdisplays: false

@@ -52,7 +52,7 @@ public class Core extends JavaPlugin{
 	public PlaceholderAPIHook pa = null;
 	public PlaceholdersHook ph = null;
 	public WorldguardHook wh = null;
-	public String version = "1.5";
+	public String version = "1.6";
 	private Updater update;
 	
 	private String level_progress_identifier = "|";
