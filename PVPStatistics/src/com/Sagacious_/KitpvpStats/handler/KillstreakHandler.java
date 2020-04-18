@@ -64,6 +64,9 @@ public class KillstreakHandler {
 						}else if(s.startsWith("chat:")){
 						   s = s.substring(5);
 						   p.sendMessage(ChatColor.translateAlternateColorCodes('&', s.replaceAll("%player%", p.getName())));
+						}else if(s.startsWith("bc:")) {
+							s = s.substring(3);
+							Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', s.replace("%player%", p.getName()).replace("%player%", p.getName())));
 						}
 				}
 			}
@@ -71,9 +74,12 @@ public class KillstreakHandler {
 	}
 	
 	public void endkillstreak(Player killer, Player p, int streak) {
+		boolean b = false;
 		if(getLastSurpassedKillStreak(streak)>0) {
 			for(Entry<Integer, HashMap<List<String>, List<String>>> f : killstreaks.entrySet()) {
 				for(List<String> z : f.getValue().values()) {
+					if(!b) {
+						b=true;
 					for(String s : z) {
 						if(s.startsWith("cmd:")) {
 							   s = s.substring(4);
@@ -81,7 +87,11 @@ public class KillstreakHandler {
 							}else if(s.startsWith("chat:")){
 							   s = s.substring(5);
 							   killer.sendMessage(ChatColor.translateAlternateColorCodes('&', s.replace("%player%", p.getName()).replace("%killer%", killer.getName())));
+							}else if(s.startsWith("bc:")) {
+								s = s.substring(3);
+								Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', s.replace("%player%", p.getName()).replace("%killer%", killer.getName())));
 							}
+					}
 					}
 				}
 			}

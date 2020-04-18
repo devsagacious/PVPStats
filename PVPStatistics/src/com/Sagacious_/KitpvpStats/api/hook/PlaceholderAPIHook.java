@@ -62,22 +62,25 @@ public class PlaceholderAPIHook extends me.clip.placeholderapi.expansion.Placeho
         	return ""+Core.getInstance().getKillsToNextLevel(ps.getKills());
         }
         if(id.contains("kills_")) {
-        	int f = Integer.parseInt(id.split("_")[1])-1;
-        	if(Core.getInstance().lh.killTop.size()<=f) {return "None";}
-			UserData d = Core.getInstance().lh.killTop.get(f);
-			return "" + (id.endsWith("_amount")?d.getKills():d.getName());
+			int f = Integer.parseInt(id.split("_")[1])-1;
+			if(Core.getInstance().lh.killTop.size()>f) {
+				return id.endsWith("amount")?""+Core.getInstance().lh.killTop.get(f).getKills():Core.getInstance().lh.killTop.get(f).getName();
+			}
+			return "None";
 		}
 		if(id.contains("deaths_")) {
 			int f = Integer.parseInt(id.split("_")[1])-1;
-			if(Core.getInstance().lh.deathTop.size()<=f){return "None";}
-			UserData d = Core.getInstance().lh.deathTop.get(f);
-			return "" + (id.endsWith("_amount")?d.getDeaths():d.getName());
+			if(Core.getInstance().lh.deathTop.size()>f) {
+				return id.endsWith("amount")?""+Core.getInstance().lh.deathTop.get(f).getDeaths():Core.getInstance().lh.deathTop.get(f).getName();
+			}
+			return "None";
 		}
 		if(id.contains("killstreak_")) {
 			int f = Integer.parseInt(id.split("_")[1])-1;
-			if(Core.getInstance().lh.killstreakTop.size()<=f){return "None";}
-			UserData d = Core.getInstance().lh.killstreakTop.get(f);
-			return "" + (id.endsWith("_amount")?d.getKillstreak():d.getName());
+			if(Core.getInstance().lh.killstreakTop.size()>f) {
+				return id.endsWith("amount")?""+Core.getInstance().lh.killstreakTop.get(f).getKillstreak():Core.getInstance().lh.killstreakTop.get(f).getName();
+			}
+			return "None";
 		}
 		}
 		return null;

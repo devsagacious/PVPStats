@@ -91,9 +91,10 @@ public class PlaceholdersHook {
 					@Override
 					public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent e) {
 						int f = Integer.parseInt(e.getPlaceholder().split("_")[2])-1;
-			        	if(Core.getInstance().lh.killTop.size()<=f) {return "None";}
-						UserData d = Core.getInstance().lh.killTop.get(f);
-						return "" + (e.getPlaceholder().endsWith("_amount")?d.getKills():d.getName());
+						if(Core.getInstance().lh.killTop.size()>f) {
+							return e.getPlaceholder().endsWith("amount")?""+Core.getInstance().lh.killTop.get(f).getKills():Core.getInstance().lh.killTop.get(f).getName();
+						}
+						return "None";
 					}
 				});
 			}
@@ -102,9 +103,10 @@ public class PlaceholdersHook {
 					@Override
 					public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent e) {
 						int f = Integer.parseInt(e.getPlaceholder().split("_")[2])-1;
-			        	if(Core.getInstance().lh.deathTop.size()<=f) {return "None";}
-						UserData d = Core.getInstance().lh.deathTop.get(f);
-						return "" + (e.getPlaceholder().endsWith("_amount")?d.getDeaths():d.getName());
+						if(Core.getInstance().lh.deathTop.size()>f) {
+							return e.getPlaceholder().endsWith("amount")?""+Core.getInstance().lh.deathTop.get(f).getDeaths():Core.getInstance().lh.deathTop.get(f).getName();
+						}
+						return "None";
 					}
 				});
 			}
@@ -113,9 +115,10 @@ public class PlaceholdersHook {
 					@Override
 					public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent e) {
 						int f = Integer.parseInt(e.getPlaceholder().split("_")[2])-1;
-			        	if(Core.getInstance().lh.killstreakTop.size()<=f) {return "None";}
-						UserData d = Core.getInstance().lh.killstreakTop.get(f);
-						return "" + (e.getPlaceholder().endsWith("_amount")?d.getKillstreak():d.getName());
+						if(Core.getInstance().lh.killstreakTop.size()>f) {
+							return e.getPlaceholder().endsWith("amount")?""+Core.getInstance().lh.killstreakTop.get(f).getKillstreak():Core.getInstance().lh.killstreakTop.get(f).getName();
+						}
+						return "None";
 					}
 				});
 			}

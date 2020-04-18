@@ -56,9 +56,16 @@ public class CommandStats implements CommandExecutor{
 			 data = Core.getInstance().dh.getData((Player)sender);
 			}
 			for(String s : stat) {
-				sender.sendMessage(ChatColor.translateAlternateColorCodes('&', s.replace("%player%", pl).replace("%kills%", ""+data.getKills()).replace("%deaths%", ""+data.getDeaths()).replace("%killstreak%", ""+data.getKillstreak()).replace("%kdr%", getKDR(data))
+				String f = ChatColor.translateAlternateColorCodes('&', s.replace("%player%", pl).replace("%kills%", ""+data.getKills()).replace("%deaths%", ""+data.getDeaths()).replace("%killstreak%", ""+data.getKillstreak()).replace("%kdr%", getKDR(data))
 						.replace("%top_killstreak%", ""+data.getTopKillstreak()).replace("%level%", Core.getInstance().getLevel(data.getKills())).replace("%level_progress%", Core.getInstance().getLevelProgress(data.getKills()))
-								.replace("%level_progress_percent%", Core.getInstance().getLevelProgressPercent(data.getKills())).replace("%kills_tonextlevel%", ""+Core.getInstance().getKillsToNextLevel(data.getKills()))));
+						.replace("%level_progress_percent%", Core.getInstance().getLevelProgressPercent(data.getKills())).replace("%kills_tonextlevel%", ""+Core.getInstance().getKillsToNextLevel(data.getKills())));
+				if(Core.getInstance().ph!=null) {
+					f=Core.getInstance().ph.format((Player)sender, f);
+				}
+				if(Core.getInstance().pa!=null&&me.clip.placeholderapi.PlaceholderAPI.containsPlaceholders(f)) {
+					f=me.clip.placeholderapi.PlaceholderAPI.setPlaceholders((Player)sender, f);
+				}
+				sender.sendMessage(f);
 			}
 			return true;
 		}
