@@ -88,7 +88,7 @@ public class CommandMoveleaderboard implements CommandExecutor{
 				s = Core.getInstance().h.killstreakHologram;
 			}
 			if(s==null) {
-				p.sendMessage("§c§lPVPStats §8| §rInvalid command syntax, use /moveleaderboard <kills/deaths/killstreak/kdr/chr/hmr>");
+				p.sendMessage("§c§lPVPStats §8| §rInvalid command syntax, use /moveleaderboard <kills/deaths/killstreak>");
 				return true;
 			}
 			s.teleport(p.getLocation());

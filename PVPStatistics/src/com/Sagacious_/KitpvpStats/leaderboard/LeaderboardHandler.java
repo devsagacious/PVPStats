@@ -210,6 +210,24 @@ public class LeaderboardHandler implements Listener{
 		FileConfiguration conf = Core.getInstance().getConfig();
 		format = ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-format"));
 		lke = conf.getBoolean("leaderboard-kills-enabled");
+		
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), new Runnable() {
+			public void run() {
+				refreshKills();
+			}
+		}, 40L, 20L*conf.getInt("leaderboard-update-time"));
+		
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), new Runnable() {
+			public void run() {
+				refreshDeaths();
+			}
+		}, 60L, 20L*conf.getInt("leaderboard-update-time"));
+		
+		Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), new Runnable() {
+			public void run() {
+				refreshKillstreak();
+			}
+		}, 80L, 20L*conf.getInt("leaderboard-update-time"));
 		if(lke) {
 			if(!Core.getInstance().useHolographic) {
 			String[] l = conf.getString("leaderboard-kills-location").split(",");
@@ -224,11 +242,6 @@ public class LeaderboardHandler implements Listener{
 			lke_l.setY(lke_l.getY()-0.3D);
 			kill_hologram.add(new Hologram(lke_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-kills-footer"))));
 			}
-			Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), new Runnable() {
-				public void run() {
-					refreshKills();
-				}
-			}, 40L, 20L*conf.getInt("leaderboard-update-time"));
 		}
 		lde = conf.getBoolean("leaderboard-deaths-enabled");
 		if(lde) {
@@ -245,11 +258,6 @@ public class LeaderboardHandler implements Listener{
 			lde_l.setY(lde_l.getY()-0.3D);
 			deaths_hologram.add(new Hologram(lde_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-deaths-footer"))));
 			}
-			Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), new Runnable() {
-				public void run() {
-					refreshDeaths();
-				}
-			}, 60L, 20L*conf.getInt("leaderboard-update-time"));
 		}
 		lkie = conf.getBoolean("leaderboard-killstreak-enabled");
 		if(lkie) {
@@ -266,11 +274,6 @@ public class LeaderboardHandler implements Listener{
 			lkie_l.setY(lkie_l.getY()-0.3D);
 			killstreak_hologram.add(new Hologram(lkie_l, ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-killstreak-footer"))));
 			}
-			Bukkit.getScheduler().scheduleSyncRepeatingTask(Core.getInstance(), new Runnable() {
-				public void run() {
-					refreshKillstreak();
-				}
-			}, 80L, 20L*conf.getInt("leaderboard-update-time"));
 		}
 	}
 	
