@@ -77,6 +77,7 @@ public class KillstreakHandler {
 		boolean b = false;
 		if(getLastSurpassedKillStreak(streak)>0) {
 			for(Entry<Integer, HashMap<List<String>, List<String>>> f : killstreaks.entrySet()) {
+				if(f.getKey()==getLastSurpassedKillStreak(streak)) {
 				for(List<String> z : f.getValue().values()) {
 					if(!b) {
 						b=true;
@@ -91,6 +92,7 @@ public class KillstreakHandler {
 								s = s.substring(3);
 								Bukkit.broadcastMessage(ChatColor.translateAlternateColorCodes('&', s.replace("%player%", p.getName()).replace("%killer%", killer.getName())));
 							}
+					}
 					}
 					}
 				}

@@ -53,6 +53,7 @@ public class PlaceholderAPIHook extends me.clip.placeholderapi.expansion.Placeho
 			return "" + ps.getTopKillstreak();
 		}
 		if(id.equals("level_progress")) {
+			Core.getInstance().getLogger().info(Core.getInstance().getLevelProgress(ps.getKills()));
 			return Core.getInstance().getLevelProgress(ps.getKills());
 		}
         if(id.equals("level_progress_percent")) {
@@ -78,7 +79,7 @@ public class PlaceholderAPIHook extends me.clip.placeholderapi.expansion.Placeho
 		if(id.contains("killstreak_")) {
 			int f = Integer.parseInt(id.split("_")[1])-1;
 			if(Core.getInstance().lh.killstreakTop.size()>f) {
-				return id.endsWith("amount")?""+Core.getInstance().lh.killstreakTop.get(f).getKillstreak():Core.getInstance().lh.killstreakTop.get(f).getName();
+				return id.endsWith("amount")?""+Core.getInstance().lh.killstreakTop.get(f).getTopKillstreak():Core.getInstance().lh.killstreakTop.get(f).getName();
 			}
 			return "None";
 		}

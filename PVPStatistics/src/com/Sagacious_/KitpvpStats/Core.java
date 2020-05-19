@@ -35,6 +35,7 @@ import com.Sagacious_.KitpvpStats.handler.AntistatsHandler;
 import com.Sagacious_.KitpvpStats.handler.KillstreakHandler;
 import com.Sagacious_.KitpvpStats.leaderboard.LeaderboardHandler;
 import com.Sagacious_.KitpvpStats.leaderboard.LeaderboardHandler.Hologram;
+import com.Sagacious_.KitpvpStats.metrics.Metrics;
 import com.Sagacious_.KitpvpStats.util.FileUtil;
 
 public class Core extends JavaPlugin{
@@ -64,6 +65,7 @@ public class Core extends JavaPlugin{
 	@Override
 	public void onEnable() {
 		instance = this;
+		new Metrics(this, 7500);
 		setupConfig();
 		if (!getConfig().getString("version").equals(version)) {
             getLogger().info("Your configuration file was not up to date. Updating it now...");

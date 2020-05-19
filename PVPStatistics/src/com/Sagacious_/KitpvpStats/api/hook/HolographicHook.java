@@ -1,5 +1,7 @@
 package com.Sagacious_.KitpvpStats.api.hook;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -40,7 +42,7 @@ public class HolographicHook implements Listener{
         if(lke) {
         	String[] l = conf.getString("leaderboard-kills-location").split(",");
         	if(Bukkit.getWorld(l[0])==null) {Core.getInstance().getLogger().info("World does not exist, leaderboards will not work (change in config.yml)");return;}
-			lke_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2])+0.3, Double.valueOf(l[3]));
+			lke_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2]), Double.valueOf(l[3]));
 			Hologram h = HologramsAPI.createHologram(Core.getInstance(), lke_l);
 			h.appendTextLine(ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-kills-header")));
 			killHologram = h;
@@ -52,7 +54,7 @@ public class HolographicHook implements Listener{
         if(lde) {
         	String[] l = conf.getString("leaderboard-deaths-location").split(",");
         	if(Bukkit.getWorld(l[0])==null) {Core.getInstance().getLogger().info("World does not exist, leaderboards will not work (change in config.yml)");return;}
-			lde_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2])+0.3, Double.valueOf(l[3]));
+			lde_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2]), Double.valueOf(l[3]));
 			Hologram h = HologramsAPI.createHologram(Core.getInstance(), lde_l);
 			h.appendTextLine(ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-deaths-header")));
 			deathsHologram = h;
@@ -64,7 +66,7 @@ public class HolographicHook implements Listener{
         if(lkie) {
         	String[] l = conf.getString("leaderboard-killstreak-location").split(",");
         	if(Bukkit.getWorld(l[0])==null) {Core.getInstance().getLogger().info("World does not exist, leaderboards will not work (change in config.yml)");return;}
-			lkie_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2])+0.3, Double.valueOf(l[3]));
+			lkie_l = new Location(Bukkit.getWorld(l[0]), Double.valueOf(l[1]), Double.valueOf(l[2]), Double.valueOf(l[3]));
 			Hologram h = HologramsAPI.createHologram(Core.getInstance(), lkie_l);
 			h.appendTextLine(ChatColor.translateAlternateColorCodes('&', conf.getString("leaderboard-killstreak-header")));
 			killstreakHologram = h;
@@ -112,8 +114,14 @@ public class HolographicHook implements Listener{
 	}
 	
 	public void killAll() {
-		if(killHologram!=null) {killHologram.delete();}
-		if(deathsHologram!=null) {deathsHologram.delete();}
-		if(killstreakHologram!=null) {killstreakHologram.delete();}
+		FileConfiguration conf = Core.getInstance().getConfig();
+		if(killHologram!=null) {killHologram.delete();conf.set("leaderboard-kills-location", killHologram.getWorld().getName() + "," + killHologram.getX() + "," + (killHologram.getY()) + "," + killHologram.getZ());}
+		if(deathsHologram!=null) {deathsHologram.delete();deathsHologram.delete();conf.set("leaderboard-deaths-location", deathsHologram.getWorld().getName() + "," + deathsHologram.getX() + "," + (deathsHologram.getY()) + "," + deathsHologram.getZ());}
+		if(killstreakHologram!=null) {killstreakHologram.delete();conf.set("leaderboard-killstreak-location", killstreakHologram.getWorld().getName() + "," + killstreakHologram.getX() + "," + (killstreakHologram.getY()) + "," + killstreakHologram.getZ());}
+		 try {
+				conf.save(new File(Core.getInstance().getDataFolder(), "config.yml"));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
 	}
 }

@@ -116,7 +116,7 @@ public class PlaceholdersHook {
 					public String onPlaceholderReplace(be.maximvdw.placeholderapi.PlaceholderReplaceEvent e) {
 						int f = Integer.parseInt(e.getPlaceholder().split("_")[2])-1;
 						if(Core.getInstance().lh.killstreakTop.size()>f) {
-							return e.getPlaceholder().endsWith("amount")?""+Core.getInstance().lh.killstreakTop.get(f).getKillstreak():Core.getInstance().lh.killstreakTop.get(f).getName();
+							return e.getPlaceholder().endsWith("amount")?""+Core.getInstance().lh.killstreakTop.get(f).getTopKillstreak():Core.getInstance().lh.killstreakTop.get(f).getName();
 						}
 						return "None";
 					}

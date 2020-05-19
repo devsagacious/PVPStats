@@ -26,6 +26,8 @@ public class AntistatsHandler implements Listener{
 	private HashMap<Player, Integer> tasks = new HashMap<Player, Integer>();
 	private List<UUID> timeoutList = new ArrayList<UUID>();
 	
+	private List<Player> cooldown = new ArrayList<Player>();
+	
 	private int max_kills;
 	private int max_kills_time;
 	private int timeout;
@@ -100,8 +102,14 @@ public class AntistatsHandler implements Listener{
 	    	   }
 			UserData u = Core.getInstance().dh.getData(e.getEntity());
 			Core.getInstance().kh.endkillstreak(e.getEntity().getKiller(), e.getEntity(), u.getKillstreak());
- 		   if(u!=null) {
+ 		   if(u!=null&&!cooldown.contains(e.getEntity())) {
  			u.setKillstreak(0);u.setDeaths(u.getDeaths()+1);
+ 			cooldown.add(e.getEntity());
+ 			Bukkit.getScheduler().scheduleSyncDelayedTask(Core.getInstance(), new Runnable() {
+ 				public void run() {
+ 					cooldown.remove(e.getEntity());
+ 				}
+ 			}, 20L);
  		   }
  			if(e.getEntity().getKiller()!=null && e.getEntity().getKiller() instanceof Player) {
  				if(!timeoutList.contains(e.getEntity().getKiller().getUniqueId())) {
