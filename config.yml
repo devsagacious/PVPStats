@@ -1,19 +1,8 @@
-version: '1.2'
+version: '1.6'
 
-leaderboard-format: '&6%number%. &e%name% &8| &r%integer%'
-leaderboard-update-time: 120
-
-leaderboard-kills-enabled: false
-leaderboard-kills-header: '&7Top 10 kills'
-leaderboard-kills-location: 'world, 0.0, 5.0, 0.0'
-
-leaderboard-deaths-enabled: false
-leaderboard-deaths-header: '&7Top 10 Deaths'
-leaderboard-deaths-location: 'world, 0.0, 5.0, 0.0'
-
-leaderboard-killstreak-enabled: false
-leaderboard-killstreak-header: '&7Top 10 Killstreaks'
-leaderboard-killstreak-location: 'world, 0.0, 5.0, 0.0'
+# KDR Format, if you don't know what this means, dont change it.
+# https://docs.oracle.com/javase/7/docs/api/java/text/DecimalFormat.html
+kdr-format: '##0.0'
 
 #{player} returns either 'My' or "PlayerExample's"
 stats-command: 
@@ -24,24 +13,30 @@ stats-command:
   - '&aKillstreak &8> &r%killstreak%'
   - '&aTop Killstreak &8> &r%top_killstreak%'
   - '&aLevel &8> &r%level%'
-me: 'My'  
+  - '&aProgress &8> &8[&r%level_progress%&8] &b%level_progress_percent%% &7(&6%kills_tonextlevel% &7kills to next level)'
+me: 'My' 
+
+level-progress-identifier: '|'
+level-progress-blocks: 20
+level-progress-color: '&a'
+level-progress-noncolor: '&7'
   
   
 level-kills-interval: 25
 
 #Each string represents a higher level
-#You can reward a player by using : and then putting in your command, multiple commands? just keep using :
+#You can reward a player by using : and then putting in your command, multiple commands? just keep using "::"
 levels:
   - '&6Rookie' #Lvl 1.
   - '&aKiller' #Lvl 2.
   - '&cMurderer' #Lvl 3.
-  - '&6Command Example:eco give %player% 100:msg %player% You have reached level 4!'
+  - '&6Command Example::eco give %player% 100::msg %player% You have reached level 4!'
 
 ## Chat Formatting ##
 ### - REQUIRES Vault
 #### : Support for PlaceholderAPI/MVdWPlaceholderAPI
 use-format: false
-format: "&7[%level%&7] %prefix%&7%player%&8: &7%suffix%%message%"
+format: "&7[{pvplevel}&7] {prefix}&7{player}&8: &7{suffix}{message}"
 
 
 #Anti stats booster, set 0 to disable
@@ -63,3 +58,6 @@ worldguard-regions:
   - '__global__'
 
 auto-update: false
+
+# What worlds not to gather stats in?
+world-blacklist: ['world_the_end', 'notthisworld']
