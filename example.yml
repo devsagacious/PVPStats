@@ -3,3 +3,9 @@ perform-at: 5
 perform: 
   - 'cmd:broadcast &c%player% &7has a &c5 kill &7killstreak!'
   - 'chat:&7You have a &c5 kill &7killstreak!'
+
+#Just set one of these lines to "" and remove the other ones to neglect this
+end-reward:
+  - "cmd:broadcast &c%killer% &7has ended &c%player%&7's 5 kill killstreak!"
+  - "chat:&cYou recieved 200$ for ending %player%'s killstreak"
+  - "cmd:eco give %killer% 200"
