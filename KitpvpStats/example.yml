@@ -1,5 +1,0 @@
-perform-at: 5
-
-perform: 
-  - 'cmd:broadcast &c%player% &7has a &c5 kill &7killstreak!'
-  - 'chat:&7You have a &c5 kill &7killstreak!'
